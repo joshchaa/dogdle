@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s https://dog.ceo/api/breeds/list/all)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); breeds=data[''''message'''']; flat=[b for b in breeds] + [f''''{b}/{s}'''' for b,subs in breeds.items\\(\\) for s in subs]; print\\(''''\\\\n''''.join\\(sorted\\(flat\\)\\)\\)\")"
+    ]
+  }
+}

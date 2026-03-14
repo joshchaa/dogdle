@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOGDLE — Breed Photo QA</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+
+    #blocked {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 1.2rem;
+      color: #f85149;
+    }
+
+    header {
+      max-width: 1100px;
+      margin: 0 auto 24px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #58a6ff;
+      margin-bottom: 6px;
+    }
+
+    .summary {
+      display: flex;
+      gap: 20px;
+      font-size: 0.85rem;
+      color: #8b949e;
+      margin-bottom: 12px;
+    }
+
+    .summary span { font-weight: 700; }
+    .summary .ok    { color: #3fb950; }
+    .summary .wrong { color: #f85149; }
+    .summary .skip  { color: #d29922; }
+    .summary .todo  { color: #8b949e; }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .page-btn {
+      padding: 6px 16px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #e6edf3;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.15s;
+    }
+    .page-btn:hover:not(:disabled) { background: #30363d; }
+    .page-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .page-info { font-size: 0.85rem; color: #8b949e; }
+
+    .clear-btn {
+      margin-left: auto;
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid #f85149;
+      border-radius: 6px;
+      color: #f85149;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: background 0.15s;
+    }
+    .clear-btn:hover { background: rgba(248,81,73,0.1); }
+
+    /* Grid */
+    .grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .tile {
+      background: #161b22;
+      border: 2px solid #30363d;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.2s;
+    }
+
+    .tile.state-ok    { border-color: #3fb950; }
+    .tile.state-wrong { border-color: #f85149; }
+    .tile.state-skip  { border-color: #d29922; }
+
+    .tile-photo {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      background: #0d1117;
+      display: block;
+    }
+
+    .tile-photo-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #0d1117;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      color: #484f58;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tile-info {
+      padding: 8px 10px 6px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .tile-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e6edf3;
+      line-height: 1.2;
+    }
+
+    .tile-path {
+      font-size: 0.72rem;
+      color: #484f58;
+      font-family: 'Consolas', monospace;
+    }
+
+    .tile-path.null-path { color: #f85149; }
+
+    .tile-actions {
+      display: flex;
+      gap: 6px;
+      padding: 0 10px 10px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 5px 0;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s, background 0.15s;
+    }
+
+    .btn-ok {
+      background: rgba(63,185,80,0.15);
+      border-color: #3fb950;
+      color: #3fb950;
+    }
+    .btn-ok:hover, .tile.state-ok .btn-ok {
+      background: rgba(63,185,80,0.3);
+    }
+
+    .btn-wrong {
+      background: rgba(248,81,73,0.15);
+      border-color: #f85149;
+      color: #f85149;
+    }
+    .btn-wrong:hover, .tile.state-wrong .btn-wrong {
+      background: rgba(248,81,73,0.3);
+    }
+
+    .btn-skip {
+      background: rgba(210,153,34,0.15);
+      border-color: #d29922;
+      color: #d29922;
+    }
+    .btn-skip:hover, .tile.state-skip .btn-skip {
+      background: rgba(210,153,34,0.3);
+    }
+
+    .tile.state-ok    .btn-ok,
+    .tile.state-wrong .btn-wrong,
+    .tile.state-skip  .btn-skip {
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="blocked" style="display:none">
+  This page is only available on localhost.
+</div>
+
+<div id="app" style="display:none">
+  <header>
+    <h1>Breed Photo QA</h1>
+    <div class="summary">
+      <div>Total: <span id="s-total">—</span></div>
+      <div class="ok">Good: <span id="s-ok">0</span></div>
+      <div class="wrong">Wrong: <span id="s-wrong">0</span></div>
+      <div class="skip">Skipped: <span id="s-skip">0</span></div>
+      <div class="todo">Remaining: <span id="s-todo">—</span></div>
+    </div>
+    <div class="controls">
+      <button class="page-btn" id="btn-prev">← Prev</button>
+      <span class="page-info" id="page-info"></span>
+      <button class="page-btn" id="btn-next">Next →</button>
+      <button class="clear-btn" id="btn-clear">Clear All Feedback</button>
+    </div>
+  </header>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script type="module">
+  import { BREEDS } from './breeds.js';
+
+  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  document.getElementById('blocked').style.display = isLocal ? 'none' : 'flex';
+  document.getElementById('app').style.display     = isLocal ? 'block' : 'none';
+  if (!isLocal) throw new Error('Not localhost');
+
+  const PER_PAGE  = 16;
+  const QA_PREFIX = 'dogdle-qa-';
+
+  // Filter out Indian regional breeds by path
+  const BREEDS_FILTERED = BREEDS.filter(b => !b.dogCeoPath?.includes('/indian') && !b.dogCeoPath?.includes('indian/'));
+
+  let page = 0;
+  const totalPages = Math.ceil(BREEDS_FILTERED.length / PER_PAGE);
+
+  function getState(id) {
+    return localStorage.getItem(QA_PREFIX + id) || null; // 'ok' | 'wrong' | 'skip' | null
+  }
+
+  function setState(id, val) {
+    if (getState(id) === val) {
+      localStorage.removeItem(QA_PREFIX + id); // toggle off
+    } else {
+      localStorage.setItem(QA_PREFIX + id, val);
+    }
+    updateSummary();
+    updateTileState(id);
+  }
+
+  function updateSummary() {
+    const counts = { ok: 0, wrong: 0, skip: 0 };
+    BREEDS_FILTERED.forEach(b => {
+      const s = getState(b.id);
+      if (s) counts[s]++;
+    });
+    const total = BREEDS_FILTERED.length;
+    const reviewed = counts.ok + counts.wrong + counts.skip;
+    document.getElementById('s-total').textContent = total;
+    document.getElementById('s-ok').textContent    = counts.ok;
+    document.getElementById('s-wrong').textContent = counts.wrong;
+    document.getElementById('s-skip').textContent  = counts.skip;
+    document.getElementById('s-todo').textContent  = total - reviewed;
+  }
+
+  function updateTileState(id) {
+    const tile = document.querySelector(`.tile[data-id="${id}"]`);
+    if (!tile) return;
+    tile.className = 'tile';
+    const s = getState(id);
+    if (s) tile.classList.add('state-' + s);
+  }
+
+  async function fetchPhoto(path) {
+    if (!path) return null;
+    try {
+      const res  = await fetch(`https://dog.ceo/api/breed/${path}/images/random`);
+      const data = await res.json();
+      return data.status === 'success' ? data.message : null;
+    } catch { return null; }
+  }
+
+  function renderTile(breed) {
+    const state = getState(breed.id);
+    const tile  = document.createElement('div');
+    tile.className = 'tile' + (state ? ' state-' + state : '');
+    tile.dataset.id = breed.id;
+
+    // Placeholder while loading
+    const placeholder = document.createElement('div');
+    placeholder.className = 'tile-photo-placeholder';
+    placeholder.innerHTML = '<span style="font-size:1.5rem">🐾</span><span>Loading…</span>';
+    tile.appendChild(placeholder);
+
+    const info = document.createElement('div');
+    info.className = 'tile-info';
+    info.innerHTML = `
+      <div class="tile-name">${breed.name}</div>
+      <div class="tile-path ${breed.dogCeoPath ? '' : 'null-path'}">${breed.dogCeoPath ?? 'NO PATH'}</div>
+    `;
+    tile.appendChild(info);
+
+    const actions = document.createElement('div');
+    actions.className = 'tile-actions';
+    actions.innerHTML = `
+      <button class="action-btn btn-ok"    data-action="ok">✓ Good</button>
+      <button class="action-btn btn-wrong" data-action="wrong">✗ Wrong</button>
+      <button class="action-btn btn-skip"  data-action="skip">— Skip</button>
+    `;
+    actions.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => setState(breed.id, btn.dataset.action));
+    });
+    tile.appendChild(actions);
+
+    // Load photo async
+    if (breed.dogCeoPath) {
+      fetchPhoto(breed.dogCeoPath).then(url => {
+        tile.removeChild(placeholder);
+        if (url) {
+          const img = document.createElement('img');
+          img.className = 'tile-photo';
+          img.src = url;
+          img.alt = breed.name;
+          tile.prepend(img);
+        } else {
+          const ph = document.createElement('div');
+          ph.className = 'tile-photo-placeholder';
+          ph.innerHTML = '<span style="font-size:1.5rem">🚫</span><span>No image</span>';
+          tile.prepend(ph);
+        }
+      });
+    } else {
+      placeholder.innerHTML = '<span style="font-size:1.5rem">🚫</span><span>No path set</span>';
+    }
+
+    return tile;
+  }
+
+  function renderPage() {
+    const grid  = document.getElementById('grid');
+    grid.innerHTML = '';
+    const start = page * PER_PAGE;
+    const slice = BREEDS_FILTERED.slice(start, start + PER_PAGE);
+    slice.forEach(b => grid.appendChild(renderTile(b)));
+
+    document.getElementById('page-info').textContent =
+      `Page ${page + 1} of ${totalPages} (breeds ${start + 1}–${Math.min(start + PER_PAGE, BREEDS_FILTERED.length)})`;
+    document.getElementById('btn-prev').disabled = page === 0;
+    document.getElementById('btn-next').disabled = page === totalPages - 1;
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => { page--; renderPage(); window.scrollTo(0,0); });
+  document.getElementById('btn-next').addEventListener('click', () => { page++; renderPage(); window.scrollTo(0,0); });
+  document.getElementById('btn-clear').addEventListener('click', () => {
+    if (!confirm('Clear all feedback?')) return;
+    BREEDS_FILTERED.forEach(b => localStorage.removeItem(QA_PREFIX + b.id));
+    updateSummary();
+    renderPage();
+  });
+
+  updateSummary();
+  renderPage();
+</script>
+</body>
+</html>

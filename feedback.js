@@ -86,5 +86,5 @@ export function generateShareText(guesses, puzzleNum, won) {
   const rows = guesses.map(g =>
     g.feedback.map(f => RESULT_EMOJI[f.result]).join("")
   );
-  return [header, "", ...rows].join("\n");
+  return [header, "", ...rows, "", "dogdle.org"].join("\n");
 }

@@ -14,7 +14,7 @@ export const BREEDS = [
     active: "High", activeOrder: 3,
     lifespanLow: 10, lifespanHigh: 12,
     origin: "Canada", originRegion: "North America",
-    dogCeoPath: "retriever/labrador",
+    dogCeoPath: "labrador",
     petfinderName: "Labrador Retriever"
   },
   {
@@ -40,7 +40,7 @@ export const BREEDS = [
     active: "High", activeOrder: 3,
     lifespanLow: 9, lifespanHigh: 13,
     origin: "Germany", originRegion: "Europe",
-    dogCeoPath: "germanshepherd",
+    dogCeoPath: "german/shepherd",
     petfinderName: "German Shepherd Dog"
   },
   {
@@ -131,7 +131,7 @@ export const BREEDS = [
     active: "High", activeOrder: 3,
     lifespanLow: 12, lifespanHigh: 13,
     origin: "UK", originRegion: "Europe",
-    dogCeoPath: "corgi/cardigan",
+    dogCeoPath: "pembroke",
     petfinderName: "Welsh Corgi, Pembroke"
   },
   {
@@ -196,7 +196,7 @@ export const BREEDS = [
     active: "Moderate", activeOrder: 2,
     lifespanLow: 9, lifespanHigh: 15,
     origin: "UK", originRegion: "Europe",
-    dogCeoPath: "spaniel/cavalier",
+    dogCeoPath: null,
     petfinderName: "Cavalier King Charles Spaniel"
   },
   {
@@ -365,7 +365,7 @@ export const BREEDS = [
     active: "Low", activeOrder: 1,
     lifespanLow: 6, lifespanHigh: 10,
     origin: "UK", originRegion: "Europe",
-    dogCeoPath: "mastiff/bull",
+    dogCeoPath: "mastiff/english",
     petfinderName: "Mastiff"
   },
   {
@@ -404,7 +404,7 @@ export const BREEDS = [
     active: "Moderate", activeOrder: 2,
     lifespanLow: 14, lifespanHigh: 15,
     origin: "Belgium", originRegion: "Europe",
-    dogCeoPath: null,
+    dogCeoPath: "frise/bichon",
     petfinderName: "Bichon Frise"
   },
   {
@@ -430,7 +430,7 @@ export const BREEDS = [
     active: "High", activeOrder: 3,
     lifespanLow: 10, lifespanHigh: 14,
     origin: "UK", originRegion: "Europe",
-    dogCeoPath: "terrier/bull",
+    dogCeoPath: "bullterrier",
     petfinderName: "Bull Terrier"
   },
   {
@@ -534,7 +534,7 @@ export const BREEDS = [
     active: "High", activeOrder: 3,
     lifespanLow: 10, lifespanHigh: 13,
     origin: "UK", originRegion: "Europe",
-    dogCeoPath: "greyhound/italian",
+    dogCeoPath: null,
     petfinderName: "Greyhound"
   },
   {
@@ -547,7 +547,7 @@ export const BREEDS = [
     active: "Moderate", activeOrder: 2,
     lifespanLow: 14, lifespanHigh: 16,
     origin: "Cuba", originRegion: "North America",
-    dogCeoPath: null,
+    dogCeoPath: "havanese",
     petfinderName: "Havanese"
   },
   {
@@ -651,7 +651,7 @@ export const BREEDS = [
     active: "High", activeOrder: 3,
     lifespanLow: 10, lifespanHigh: 12,
     origin: "Germany", originRegion: "Europe",
-    dogCeoPath: "pointer/germanlonghair",
+    dogCeoPath: "pointer/german",
     petfinderName: "German Shorthaired Pointer"
   }
 ];

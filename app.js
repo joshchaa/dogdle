@@ -15,8 +15,10 @@ function getDayNumber() {
 
 function getDailyBreed() {
   const day = getDayNumber();
-  // Use a stable order derived from breed ids sorted; never changes
-  const stable = [...BREEDS].sort((a, b) => a.id.localeCompare(b.id));
+  // Only use breeds that have a valid dog.ceo photo path
+  const stable = [...BREEDS]
+    .filter(b => b.dogCeoPath !== null)
+    .sort((a, b) => a.id.localeCompare(b.id));
   return stable[day % stable.length];
 }
 
@@ -32,8 +34,12 @@ function getOverrideBreed() {
 // ─── State ────────────────────────────────────────────────────────────────────
 
 const todayKey   = `dogdle-${new Date().toISOString().slice(0, 10)}`;
-const target     = getOverrideBreed() ?? getDailyBreed();
+let   target     = getOverrideBreed() ?? getDailyBreed();
 const puzzleNum  = getDayNumber();
+
+let isBonus    = false;
+let bonusCount = 0;
+const playedBreedIds = new Set([target.id]);
 
 let state = loadState() || {
   guesses: [],      // [{ breedId, feedback }]
@@ -49,6 +55,7 @@ function loadState() {
 }
 
 function saveState() {
+  if (isBonus) return;
   try { localStorage.setItem(todayKey, JSON.stringify(state)); }
   catch {}
 }
@@ -145,7 +152,10 @@ async function fetchDogPhoto() {
     const res  = await fetch(`https://dog.ceo/api/breed/${path}/images`);
     const data = await res.json();
     if (data.status === 'success' && data.message?.length) {
-      const url = data.message[puzzleNum % data.message.length];
+      const idx = isBonus
+        ? Math.floor(Math.random() * data.message.length)
+        : puzzleNum % data.message.length;
+      const url = data.message[idx];
       state.photoUrl = url;
       saveState();
       return url;
@@ -433,6 +443,7 @@ function hideModal() {
 
 modalClose.addEventListener('click', hideModal);
 modalBackdrop.addEventListener('click', hideModal);
+document.getElementById('keep-playing-btn').addEventListener('click', startBonusRound);
 
 // ─── Countdown ────────────────────────────────────────────────────────────────
 
@@ -475,6 +486,7 @@ legendToggle.addEventListener('click', () => {
 // ─── Dev Console ──────────────────────────────────────────────────────────────
 
 (function initDevConsole() {
+  if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') return;
   // Build the panel
   const panel = document.createElement('div');
   panel.id = 'dev-console';
@@ -611,10 +623,46 @@ legendToggle.addEventListener('click', () => {
   });
 })();
 
+// ─── Bonus Round ──────────────────────────────────────────────────────────────
+
+function getRandomBreed() {
+  const available = BREEDS.filter(b => b.dogCeoPath !== null && !playedBreedIds.has(b.id));
+  if (!available.length) return null;
+  return available[Math.floor(Math.random() * available.length)];
+}
+
+async function startBonusRound() {
+  const newBreed = getRandomBreed();
+  if (!newBreed) return;
+
+  target = newBreed;
+  playedBreedIds.add(target.id);
+  isBonus = true;
+  bonusCount++;
+
+  state = { guesses: [], status: 'playing', photoUrl: null };
+  guessedIds.clear();
+  guessRowsEl.innerHTML = '';
+  guessInput.disabled  = false;
+  guessInput.value     = '';
+  submitBtn.disabled   = false;
+  updateGuessesLeft();
+  hideModal();
+
+  photoPlaceholder.style.display = '';
+  dogPhoto.classList.add('hidden');
+  dogPhoto.classList.remove('loaded');
+  photoPlaceholder.innerHTML = '<div class="paw-spinner">🐾</div><p>Finding a dog...</p>';
+  puzzleNumberEl.textContent = `Bonus ${bonusCount}`;
+
+  const photoUrl = await fetchDogPhoto();
+  showPhoto(photoUrl);
+}
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 async function init() {
-  puzzleNumberEl.textContent = puzzleNum;
+  puzzleNumberEl.textContent = 0;
 
   // Restore guessed ids
   state.guesses.forEach(g => guessedIds.add(g.breedId));

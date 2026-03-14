@@ -1,0 +1,15 @@
+How to push changes to dogdle.org
+
+After editing any files locally, run these 3 commands:
+
+    cd /Users/joshuacharron/Desktop/DOGDLE
+    git add .
+    git commit -m "describe what you changed"
+    git push
+
+GitHub Pages will rebuild the site automatically within ~1 minute.
+
+Examples of commit messages:
+    git commit -m "add petfinder widget"
+    git commit -m "fix header color"
+    git commit -m "update homepage text"
