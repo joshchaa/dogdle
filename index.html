@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOGDLE — Guess the Shelter Dog's Breed!</title>
+  <meta name="description" content="A daily dog breed guessing game. Guess the breed, learn about dogs, and find shelter pups that need a home!" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">🐾 DOGDLE</div>
+      <p class="tagline">Guess the breed. Rescue a life.</p>
+      <div class="puzzle-info">Puzzle #<span id="puzzle-number">—</span></div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Dog Photo -->
+    <section class="photo-section">
+      <div class="photo-frame">
+        <img id="dog-photo" class="dog-photo hidden" src="" alt="Shelter dog photo" />
+        <div id="photo-placeholder" class="photo-placeholder">
+          <div class="paw-spinner">🐾</div>
+          <p>Finding a dog...</p>
+        </div>
+      </div>
+      <p class="photo-caption">What breed is this dog?</p>
+    </section>
+
+    <!-- Input -->
+    <section class="input-section">
+      <div class="input-wrapper">
+        <div class="autocomplete-container">
+          <input
+            type="text"
+            id="guess-input"
+            placeholder="Type a breed name..."
+            autocomplete="off"
+            aria-label="Dog breed guess"
+            aria-autocomplete="list"
+            aria-controls="suggestions"
+          />
+          <ul id="suggestions" class="suggestions hidden" role="listbox"></ul>
+        </div>
+        <button id="submit-btn" aria-label="Submit guess">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+      <p class="guesses-left">Guesses remaining: <strong id="guesses-left-count">6</strong></p>
+    </section>
+
+    <!-- Guess Grid -->
+    <section class="grid-section" id="grid-section">
+      <div id="grid-container">
+        <div class="grid-header">
+          <div class="grid-header-cell">Breed</div>
+          <div class="grid-header-cell">SIZE</div>
+          <div class="grid-header-cell">SHED</div>
+          <div class="grid-header-cell">GROOM</div>
+          <div class="grid-header-cell">COAT</div>
+          <div class="grid-header-cell">ACTIVE</div>
+          <div class="grid-header-cell">LIFESPAN</div>
+          <div class="grid-header-cell">ORIGIN</div>
+        </div>
+        <div id="guess-rows"></div>
+      </div>
+    </section>
+
+    <!-- Color Legend -->
+    <section class="legend-section">
+      <button class="legend-toggle" id="legend-toggle">Color guide ▼</button>
+      <div class="legend-content hidden" id="legend-content">
+        <div class="legend-items">
+          <div class="legend-item">
+            <div class="legend-tile green">✓</div>
+            <span>Correct</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile yellow">~</div>
+            <span>Close / Partial</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile red">✗</div>
+            <span>Incorrect</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile red" style="font-size:1.1rem">↑</div>
+            <span>Guess Higher</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile red" style="font-size:1.1rem">↓</div>
+            <span>Guess Lower</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Result Modal -->
+  <div id="result-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+
+      <div id="modal-win" class="modal-section hidden">
+        <div class="modal-icon">🎉</div>
+        <h2 id="modal-title">You got it!</h2>
+        <p id="win-message"></p>
+      </div>
+
+      <div id="modal-lose" class="modal-section hidden">
+        <div class="modal-icon">😔</div>
+        <h2>The breed was…</h2>
+        <p>Better luck tomorrow!</p>
+      </div>
+
+      <div class="modal-breed-reveal">
+        <img id="modal-photo" src="" alt="" />
+        <div class="modal-breed-text">
+          <h3 id="modal-breed-name"></h3>
+          <p id="modal-breed-details"></p>
+        </div>
+      </div>
+
+      <div class="adopt-section">
+        <p class="adopt-cta">Dogs like this need a forever home!</p>
+        <a id="adopt-btn" href="#" target="_blank" rel="noopener noreferrer" class="adopt-btn">
+          🐕 Find <span id="adopt-breed-span">this breed</span> to adopt
+        </a>
+      </div>
+
+      <div class="share-section">
+        <button id="share-btn" class="share-btn">📋 Share Results</button>
+        <p id="share-toast" class="toast hidden">Copied to clipboard! ✓</p>
+      </div>
+
+      <div class="next-puzzle">
+        <p>Next DOGDLE in <strong id="countdown">—</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

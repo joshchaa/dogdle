@@ -1,0 +1,51 @@
+How to start the server (macOS)
+
+1) Using Python (quick, no install)
+
+   - Open Terminal and run from the project folder:
+
+     cd /Users/joshuacharron/Desktop/DOGDLE
+     python3 -m http.server 3000
+
+   - Open your browser at: http://localhost:3000
+
+   - Stop the server: press Ctrl+C in the terminal.
+
+   - Bind to localhost only (optional):
+
+     python3 -m http.server 3000 --bind 127.0.0.1
+
+2) Using Node (if you prefer npm)
+
+   - One-time use without global install:
+
+     npx serve . -l 3000
+
+   - Or install a static server globally:
+
+     npm install -g http-server
+     http-server -p 3000
+
+3) Running in background (simple)
+
+   - Append `&` to run in background (then close terminal safely):
+
+     python3 -m http.server 3000 &
+
+   - Or run in a separate terminal window/tab.
+
+4) Finding or killing a process on port 3000 (macOS)
+
+   - Find PID:
+
+     lsof -i :3000
+
+   - Kill PID (replace <PID>):
+
+     kill <PID>
+
+5) Notes
+
+   - Change the port number (3000) to any available port.
+   - The server serves static files from the current folder.
+   - If you need HTTPS or more features, consider a small dev server or local proxy.
