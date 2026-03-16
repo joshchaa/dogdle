@@ -1,12 +1,15 @@
 {
   "date": "2026-03-16",
-  "dogName": "Biscuit",
-  "bio": "Biscuit is a playful 2-year-old looking for a forever home. He loves fetch, belly rubs, and meeting new friends!",
+  "dogName": "Sasha",
+  "bio": "",
   "photos": [
-    "https://images.dog.ceo/breeds/retriever-golden/n02099601_7771.jpg",
-    "https://images.dog.ceo/breeds/poodle-standard/n02113799_485.jpg"
+    "https://dbw3zep4prcju.cloudfront.net/animal/be94336e-695d-4fa3-963c-3d3bece821e4/image/8f52eb0d-2900-4782-832b-5ef6c66381c5.jpeg?versionId=U3.nntg8FkWtgqZs_lA3mmh5FtjPN94J",
+    "https://dbw3zep4prcju.cloudfront.net/animal/be94336e-695d-4fa3-963c-3d3bece821e4/image/d7071d70-fed8-4e93-9499-45ef7b08a502.jpeg?versionId=RQdWPZKTdwF3tmRbDERva54Sk4JoWgXP",
+    "https://dbw3zep4prcju.cloudfront.net/animal/be94336e-695d-4fa3-963c-3d3bece821e4/image/3fc90fb5-d2b9-4f55-9042-3ad6289b701c.jpeg?versionId=GdoPUOA7HNwOSXtUUO7DZVATkmxazDfq",
+    "https://dbw3zep4prcju.cloudfront.net/animal/be94336e-695d-4fa3-963c-3d3bece821e4/image/9d032438-f215-4a99-b38c-8212da4bb4e4.jpeg?versionId=5WbOO2xGQTM8UNrgH2G3zJ.KWW9dCQiP",
+    "https://dbw3zep4prcju.cloudfront.net/animal/be94336e-695d-4fa3-963c-3d3bece821e4/image/e36bb362-d748-4365-93f8-7a79cf998cc8.jpeg?versionId=CQ6rexzM.6l5aT9F6Ee.nF9DJ6zS8s1p"
   ],
-  "breed1": "golden-retriever",
-  "breed2": "poodle",
-  "petfinderUrl": "https://www.petfinder.com/search/dogs-for-adoption/?includeOutOfTown=true"
+  "breed1": "alaskan-malamute",
+  "breed2": "siberian-husky",
+  "petfinderUrl": "https://www.petfinder.com/dog/sasha-be94336e-695d-4fa3-963c-3d3bece821e4/ny/west-harrison/embark-empathy-tx2711/details/"
 }
