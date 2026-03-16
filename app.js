@@ -603,7 +603,8 @@ function showModal() {
     if (state.photoUrl) { modalPhoto.src = state.photoUrl; modalPhoto.alt = dailyConfig?.dogName ?? ''; }
     if (dailyConfig?.petfinderUrl) {
       adoptBtn.href = dailyConfig.petfinderUrl;
-      adoptBreedSpan.textContent = dailyConfig.dogName ?? 'this dog';
+      const dogName = dailyConfig.dogName ?? 'this dog';
+      adoptBreedSpan.textContent = `Adopt ${dogName} here`;
     }
   } else {
     if (won) {
@@ -617,7 +618,9 @@ function showModal() {
     if (state.photoUrl) { modalPhoto.src = state.photoUrl; modalPhoto.alt = target.name; }
     const petfinderUrl = `https://www.petfinder.com/search/dogs-for-adoption/?breed=${encodeURIComponent(target.petfinderName)}&includeOutOfTown=true`;
     adoptBtn.href = petfinderUrl;
-    adoptBreedSpan.textContent = target.name;
+    adoptBreedSpan.textContent = isBonus
+      ? `Find ${target.name} to adopt`
+      : `Adopt ${target.name} here`;
   }
 
   resultModal.setAttribute('aria-hidden', 'false');
