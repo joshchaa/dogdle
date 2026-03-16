@@ -35,8 +35,31 @@
           <div class="paw-spinner">🐾</div>
           <p>Finding a dog...</p>
         </div>
+        <div id="album-nav" class="album-nav hidden">
+          <button id="album-prev" class="album-btn" aria-label="Previous photo">&#8249;</button>
+          <span id="album-counter" class="album-counter">1 / 1</span>
+          <button id="album-next" class="album-btn" aria-label="Next photo">&#8250;</button>
+        </div>
       </div>
-      <p class="photo-caption">What breed is this dog?</p>
+      <!-- Daily multibreed dog info (shown only for manual daily puzzles) -->
+      <div id="daily-dog-info" class="daily-dog-info hidden">
+        <h3 id="daily-dog-name" class="daily-dog-name"></h3>
+        <p id="daily-dog-bio" class="daily-dog-bio"></p>
+      </div>
+      <p id="photo-caption" class="photo-caption">What breed is this dog?</p>
+      <!-- Breed status (multibreed daily only) -->
+      <div id="breed-status" class="breed-status hidden">
+        <span class="breed-status-label">Find both breeds:</span>
+        <div class="breed-slots">
+          <div id="breed-slot-1" class="breed-slot">?</div>
+          <span class="breed-status-sep">+</span>
+          <div id="breed-slot-2" class="breed-slot">?</div>
+        </div>
+      </div>
+      <div class="hint-section">
+        <button id="hint-btn" class="hint-btn">💡 Show Hint</button>
+        <div id="hint-display" class="hint-display hidden"></div>
+      </div>
     </section>
 
     <!-- Input -->
@@ -126,7 +149,7 @@
       <div id="modal-lose" class="modal-section hidden">
         <div class="modal-icon">😔</div>
         <h2>The breed was…</h2>
-        <p>Better luck tomorrow!</p>
+        <p id="modal-lose-breeds">Better luck tomorrow!</p>
       </div>
 
       <div class="modal-breed-reveal">

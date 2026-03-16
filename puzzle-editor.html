@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>DOGDLE — Daily Puzzle Editor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #1a1a2e; color: #f0f0f0;
+      min-height: 100vh; padding: 40px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+    }
+    h1 { color: #d4af37; font-size: 1.6rem; letter-spacing: 2px; }
+    .localhost-warning {
+      background: #7b2d2d; border: 1px solid #c0392b;
+      padding: 10px 20px; border-radius: 8px; font-size: 0.85rem;
+      display: none;
+    }
+    .card {
+      background: #1e2a3a; border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 12px; padding: 28px; width: 100%; max-width: 600px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    label { font-size: 0.8rem; color: #8899aa; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 4px; }
+    input, textarea, select {
+      width: 100%; padding: 10px 14px; background: #0f3460;
+      border: 1px solid rgba(78,205,196,0.3); border-radius: 8px;
+      color: #f0f0f0; font-size: 0.95rem; font-family: inherit; outline: none;
+    }
+    input:focus, textarea:focus { border-color: #4ecdc4; }
+    textarea { resize: vertical; min-height: 80px; }
+    .breed-row { display: flex; gap: 10px; }
+    .breed-row > div { flex: 1; position: relative; }
+    .suggestions {
+      position: absolute; top: calc(100% + 4px); left: 0; right: 0;
+      background: #0f3460; border: 1px solid rgba(78,205,196,0.4);
+      border-radius: 8px; list-style: none; max-height: 200px;
+      overflow-y: auto; z-index: 100; display: none;
+    }
+    .suggestions li { padding: 8px 14px; cursor: pointer; font-size: 0.9rem; }
+    .suggestions li:hover { background: rgba(78,205,196,0.15); color: #4ecdc4; }
+    .btn {
+      padding: 12px 24px; border-radius: 30px; border: none;
+      font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.2s;
+    }
+    .btn-gold { background: #d4af37; color: #1a1a2e; }
+    .btn-gold:hover { background: #e8c84a; }
+    .btn-teal { background: transparent; border: 2px solid #4ecdc4; color: #4ecdc4; }
+    .btn-teal:hover { background: rgba(78,205,196,0.1); }
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    #output {
+      background: #0d1117; border: 1px solid #30363d; border-radius: 8px;
+      padding: 16px; font-family: 'Consolas', monospace; font-size: 0.82rem;
+      color: #c9d1d9; white-space: pre; overflow-x: auto; line-height: 1.6;
+      display: none;
+    }
+    .instructions {
+      font-size: 0.82rem; color: #8899aa; line-height: 1.7;
+      background: #16213e; padding: 16px; border-radius: 8px;
+    }
+    .instructions strong { color: #d4af37; }
+    .today { font-size: 0.8rem; color: #4ecdc4; }
+  </style>
+</head>
+<body>
+
+<h1>🐾 Daily Puzzle Editor</h1>
+<p class="today" id="today-label"></p>
+<div class="localhost-warning" id="localhost-warning">
+  ⚠️ This page is only intended for use on localhost.
+</div>
+
+<div class="card">
+  <div>
+    <label>Date (YYYY-MM-DD)</label>
+    <input type="text" id="f-date" placeholder="2026-03-16" />
+  </div>
+  <div>
+    <label>Dog's Name</label>
+    <input type="text" id="f-name" placeholder="Biscuit" />
+  </div>
+  <div>
+    <label>Bio</label>
+    <textarea id="f-bio" placeholder="A short description of the dog..."></textarea>
+  </div>
+  <div>
+    <label>Photo URLs — one per line (paste as many as you want)</label>
+    <textarea id="f-photos" placeholder="https://photo1.jpg&#10;https://photo2.jpg&#10;https://photo3.jpg" rows="5"></textarea>
+  </div>
+  <div id="photo-preview-wrap" style="display:none">
+    <label>Photo Previews</label>
+    <div id="photo-previews" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px"></div>
+  </div>
+  <div>
+    <label>Breeds (type to search — pick two)</label>
+    <div class="breed-row">
+      <div>
+        <input type="text" id="f-breed1" placeholder="Breed 1..." autocomplete="off" />
+        <input type="hidden" id="f-breed1-id" />
+        <ul class="suggestions" id="sug-1"></ul>
+      </div>
+      <div>
+        <input type="text" id="f-breed2" placeholder="Breed 2..." autocomplete="off" />
+        <input type="hidden" id="f-breed2-id" />
+        <ul class="suggestions" id="sug-2"></ul>
+      </div>
+    </div>
+  </div>
+  <div>
+    <label>Petfinder URL (direct link to this dog)</label>
+    <input type="text" id="f-petfinder" placeholder="https://www.petfinder.com/dog/..." />
+  </div>
+  <div class="actions">
+    <button class="btn btn-gold" onclick="generate()">Generate JSON</button>
+    <button class="btn btn-teal" id="copy-btn" onclick="copyJSON()" style="display:none">📋 Copy to Clipboard</button>
+  </div>
+  <pre id="output"></pre>
+</div>
+
+<div class="card instructions">
+  <strong>How to use:</strong><br>
+  1. Fill in the fields above and click <strong>Generate JSON</strong><br>
+  2. Click <strong>Copy to Clipboard</strong><br>
+  3. Open <strong>daily.json</strong> in VS Code and paste<br>
+  4. Run <code style="background:#0d1117;padding:2px 6px;border-radius:4px">git add daily.json &amp;&amp; git commit -m "set daily puzzle" &amp;&amp; git push</code><br>
+  5. The puzzle goes live within ~60 seconds
+</div>
+
+<script type="module">
+  import { BREEDS } from './breeds.js';
+
+  const today = new Date().toISOString().slice(0, 10);
+  document.getElementById('today-label').textContent = `Today: ${today}`;
+  document.getElementById('f-date').value = today;
+
+  if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
+    document.getElementById('localhost-warning').style.display = 'block';
+  }
+
+  // Preview photos on URL input
+  document.getElementById('f-photos').addEventListener('input', e => {
+    const urls = e.target.value.split('\n').map(s => s.trim()).filter(Boolean);
+    const wrap = document.getElementById('photo-preview-wrap');
+    const container = document.getElementById('photo-previews');
+    if (!urls.length) { wrap.style.display = 'none'; return; }
+    container.innerHTML = urls.map(url =>
+      `<img src="${url}" style="width:120px;height:120px;object-fit:cover;border-radius:8px;border:2px solid rgba(212,175,55,0.3)" />`
+    ).join('');
+    wrap.style.display = '';
+  });
+
+  // Breed autocomplete
+  function setupBreedAC(inputId, hiddenId, sugId) {
+    const input  = document.getElementById(inputId);
+    const hidden = document.getElementById(hiddenId);
+    const sug    = document.getElementById(sugId);
+
+    input.addEventListener('input', () => {
+      hidden.value = '';
+      const q = input.value.toLowerCase().trim();
+      const matches = q ? BREEDS.filter(b => b.name.toLowerCase().includes(q)).slice(0, 8) : [];
+      if (!matches.length) { sug.style.display = 'none'; return; }
+      sug.innerHTML = matches.map(b => `<li data-id="${b.id}" data-name="${b.name}">${b.name}</li>`).join('');
+      sug.style.display = 'block';
+    });
+
+    sug.addEventListener('mousedown', e => {
+      const li = e.target.closest('li');
+      if (!li) return;
+      e.preventDefault();
+      input.value  = li.dataset.name;
+      hidden.value = li.dataset.id;
+      sug.style.display = 'none';
+    });
+
+    document.addEventListener('click', e => {
+      if (!e.target.closest(`#${inputId}`) && !e.target.closest(`#${sugId}`)) {
+        sug.style.display = 'none';
+      }
+    });
+  }
+
+  setupBreedAC('f-breed1', 'f-breed1-id', 'sug-1');
+  setupBreedAC('f-breed2', 'f-breed2-id', 'sug-2');
+
+  window.generate = function() {
+    const date      = document.getElementById('f-date').value.trim();
+    const dogName   = document.getElementById('f-name').value.trim();
+    const bio       = document.getElementById('f-bio').value.trim();
+    const photos    = document.getElementById('f-photos').value.split('\n').map(s => s.trim()).filter(Boolean);
+    const breed1    = document.getElementById('f-breed1-id').value.trim();
+    const breed2    = document.getElementById('f-breed2-id').value.trim();
+    const petfinder = document.getElementById('f-petfinder').value.trim();
+
+    if (!date || !dogName || !photos.length || !breed1 || !breed2) {
+      alert('Please fill in: date, dog name, at least one photo URL, and both breeds.');
+      return;
+    }
+
+    const json = JSON.stringify({ date, dogName, bio, photos, breed1, breed2, petfinderUrl: petfinder }, null, 2);
+    const out  = document.getElementById('output');
+    out.textContent = json;
+    out.style.display = 'block';
+    document.getElementById('copy-btn').style.display = 'inline-flex';
+    window._generatedJSON = json;
+  };
+
+  window.copyJSON = async function() {
+    if (!window._generatedJSON) return;
+    try {
+      await navigator.clipboard.writeText(window._generatedJSON);
+      document.getElementById('copy-btn').textContent = '✓ Copied!';
+      setTimeout(() => { document.getElementById('copy-btn').textContent = '📋 Copy to Clipboard'; }, 2000);
+    } catch {
+      window.prompt('Copy this JSON:', window._generatedJSON);
+    }
+  };
+</script>
+</body>
+</html>

@@ -37,14 +37,33 @@ const todayKey   = `dogdle-${new Date().toISOString().slice(0, 10)}`;
 let   target     = getOverrideBreed() ?? getDailyBreed();
 const puzzleNum  = getDayNumber();
 
-let isBonus    = false;
-let bonusCount = 0;
-const playedBreedIds = new Set([target.id]);
+let isBonus          = false;
+let bonusCount       = 0;
+let isMultibreed     = false;
+let currentPhotos    = [];
+let currentPhotoIdx  = 0;
+let target1      = null;
+let target2      = null;
+const guessedBreedIds = new Set();
+const playedBreedIds  = new Set([target.id]);
+
+let dailyConfig = null;
+
+async function loadDailyConfig() {
+  try {
+    const res = await fetch('./daily.json');
+    if (!res.ok) return;
+    const data = await res.json();
+    const today = new Date().toISOString().slice(0, 10);
+    if (data.date === today) dailyConfig = data;
+  } catch {}
+}
 
 let state = loadState() || {
-  guesses: [],      // [{ breedId, feedback }]
-  status:  "playing",
-  photoUrl: null
+  guesses:         [],   // [{ breedId, feedback, foundTargetId }]
+  status:          'playing',
+  photoUrl:        null,
+  guessedBreedIds: []
 };
 
 function loadState() {
@@ -58,6 +77,31 @@ function saveState() {
   if (isBonus) return;
   try { localStorage.setItem(todayKey, JSON.stringify(state)); }
   catch {}
+}
+
+// ─── DOM refs ─────────────────────────────────────────────────────────────────
+
+// ─── Hints ────────────────────────────────────────────────────────────────────
+
+let hintsData = {};
+fetch('./hints.json').then(r => r.json()).then(d => { hintsData = d; }).catch(() => {});
+
+const hintBtn     = document.getElementById('hint-btn');
+const hintDisplay = document.getElementById('hint-display');
+
+hintBtn.addEventListener('click', () => {
+  const hint = hintsData[target.id];
+  hintDisplay.textContent = hint || 'No hint available for this breed.';
+  hintDisplay.classList.remove('hidden');
+  hintBtn.disabled     = true;
+  hintBtn.textContent  = '💡 Hint';
+});
+
+function resetHint() {
+  hintDisplay.classList.add('hidden');
+  hintDisplay.textContent = '';
+  hintBtn.disabled    = false;
+  hintBtn.textContent = '💡 Show Hint';
 }
 
 // ─── DOM refs ─────────────────────────────────────────────────────────────────
@@ -76,6 +120,7 @@ const modalBackdrop    = document.getElementById('modal-backdrop');
 const modalWin         = document.getElementById('modal-win');
 const modalLose        = document.getElementById('modal-lose');
 const winMessage       = document.getElementById('win-message');
+const modalLoseBreeds  = document.getElementById('modal-lose-breeds');
 const modalPhoto       = document.getElementById('modal-photo');
 const modalBreedName   = document.getElementById('modal-breed-name');
 const modalBreedDetail = document.getElementById('modal-breed-details');
@@ -86,6 +131,43 @@ const shareToast       = document.getElementById('share-toast');
 const countdownEl      = document.getElementById('countdown');
 const legendToggle     = document.getElementById('legend-toggle');
 const legendContent    = document.getElementById('legend-content');
+const breedStatusEl    = document.getElementById('breed-status');
+const breedSlot1El     = document.getElementById('breed-slot-1');
+const breedSlot2El     = document.getElementById('breed-slot-2');
+const dailyDogInfoEl   = document.getElementById('daily-dog-info');
+const dailyDogNameEl   = document.getElementById('daily-dog-name');
+const dailyDogBioEl    = document.getElementById('daily-dog-bio');
+const photoCaptionEl   = document.getElementById('photo-caption');
+const albumNavEl       = document.getElementById('album-nav');
+const albumPrevBtn     = document.getElementById('album-prev');
+const albumNextBtn     = document.getElementById('album-next');
+const albumCounterEl   = document.getElementById('album-counter');
+
+albumPrevBtn.addEventListener('click', () => showAlbumPhoto(currentPhotoIdx - 1));
+albumNextBtn.addEventListener('click', () => showAlbumPhoto(currentPhotoIdx + 1));
+
+function updateAlbumNav() {
+  if (currentPhotos.length <= 1) { albumNavEl.classList.add('hidden'); return; }
+  albumNavEl.classList.remove('hidden');
+  albumCounterEl.textContent  = `${currentPhotoIdx + 1} / ${currentPhotos.length}`;
+  albumPrevBtn.disabled = currentPhotoIdx === 0;
+  albumNextBtn.disabled = currentPhotoIdx === currentPhotos.length - 1;
+}
+
+function showAlbumPhoto(idx) {
+  if (idx < 0 || idx >= currentPhotos.length) return;
+  currentPhotoIdx = idx;
+  dogPhoto.classList.add('hidden');
+  dogPhoto.classList.remove('loaded');
+  dogPhoto.onload = () => {
+    photoPlaceholder.style.display = 'none';
+    dogPhoto.classList.remove('hidden');
+    dogPhoto.classList.add('loaded');
+    updatePhotoReveal(state.status !== 'playing');
+    updateAlbumNav();
+  };
+  dogPhoto.src = currentPhotos[idx];
+}
 
 // ─── Photo Loading ─────────────────────────────────────────────────────────────
 
@@ -142,7 +224,19 @@ async function resolveDogCeoPath(hint, breedName) {
 }
 
 async function fetchDogPhoto() {
-  if (state.photoUrl) return state.photoUrl;
+  if (state.photoUrl) {
+    // Restore album for daily puzzles on page reload
+    if (dailyConfig?.photos?.length) currentPhotos = dailyConfig.photos;
+    return state.photoUrl;
+  }
+
+  // Daily manual puzzle — use provided photos array
+  if (dailyConfig?.photos?.length) {
+    currentPhotos   = dailyConfig.photos;
+    state.photoUrl  = currentPhotos[0];
+    saveState();
+    return currentPhotos[0];
+  }
 
   try {
     const path = await resolveDogCeoPath(target.dogCeoPath, target.name);
@@ -168,6 +262,29 @@ async function fetchDogPhoto() {
   return null;
 }
 
+function updatePhotoReveal(forceReveal = false) {
+  if (!dogPhoto.classList.contains('loaded')) return;
+  const maxG = isMultibreed ? 8 : MAX_GUESSES;
+  if (forceReveal || state.status !== 'playing') {
+    dogPhoto.style.transform = 'scale(1.0)';
+    return;
+  }
+  const startScale = 2.4;
+  const progress   = state.guesses.length / maxG;
+  const scale      = startScale - (startScale - 1.0) * progress;
+  dogPhoto.style.transform = `scale(${scale.toFixed(2)})`;
+}
+
+function updateBreedStatus() {
+  if (!isMultibreed) return;
+  const f1 = guessedBreedIds.has(target1.id);
+  const f2 = guessedBreedIds.has(target2.id);
+  breedSlot1El.textContent = f1 ? `${target1.name} ✓` : '?';
+  breedSlot1El.classList.toggle('found', f1);
+  breedSlot2El.textContent = f2 ? `${target2.name} ✓` : '?';
+  breedSlot2El.classList.toggle('found', f2);
+}
+
 function showPhoto(url) {
   if (!url) {
     photoPlaceholder.innerHTML = '<div class="paw-spinner">🐶</div><p>No photo available</p>';
@@ -177,6 +294,8 @@ function showPhoto(url) {
     photoPlaceholder.style.display = 'none';
     dogPhoto.classList.remove('hidden');
     dogPhoto.classList.add('loaded');
+    updatePhotoReveal(state.status !== 'playing');
+    updateAlbumNav();
   };
   dogPhoto.onerror = () => {
     photoPlaceholder.innerHTML = '<div class="paw-spinner">🐶</div><p>Photo unavailable</p>';
@@ -280,24 +399,77 @@ function submitGuess() {
     return;
   }
 
-  const feedback = computeFeedback(breed, target);
-  state.guesses.push({ breedId: breed.id, feedback });
-  guessedIds.add(breed.id);
-  saveState();
+  const maxG = isMultibreed ? 8 : MAX_GUESSES;
+  let feedback, foundTargetId = null;
 
-  const isWin  = breed.id === target.id;
-  const isLoss = !isWin && state.guesses.length >= MAX_GUESSES;
-
-  if (isWin)       state.status = 'won';
-  else if (isLoss) state.status = 'lost';
-  saveState();
-
-  appendGuessRow(breed, feedback, isWin || isLoss, () => {
-    updateGuessesLeft();
-    if (state.status !== 'playing') {
-      setTimeout(showModal, 600);
+  if (isMultibreed) {
+    // Check if this guess hits one of the two target breeds
+    if (breed.id === target1.id && !guessedBreedIds.has(target1.id)) {
+      guessedBreedIds.add(target1.id);
+      foundTargetId = target1.id;
+    } else if (breed.id === target2.id && !guessedBreedIds.has(target2.id)) {
+      guessedBreedIds.add(target2.id);
+      foundTargetId = target2.id;
     }
-  });
+
+    // Compute feedback: correct guess → compare to itself (all green)
+    // Wrong guess → compare to the remaining target with best match score
+    let feedbackTarget;
+    if (foundTargetId) {
+      feedbackTarget = foundTargetId === target1.id ? target1 : target2;
+    } else {
+      const remaining = [target1, target2].filter(t => !guessedBreedIds.has(t.id));
+      if (remaining.length === 1) {
+        feedbackTarget = remaining[0];
+      } else {
+        const score = t => {
+          const fb = computeFeedback(breed, t);
+          return fb.filter(x => x.result === 'correct').length * 2
+               + fb.filter(x => x.result === 'partial').length;
+        };
+        feedbackTarget = score(remaining[0]) >= score(remaining[1]) ? remaining[0] : remaining[1];
+      }
+    }
+    feedback = computeFeedback(breed, feedbackTarget);
+
+    state.guesses.push({ breedId: breed.id, feedback, foundTargetId });
+    state.guessedBreedIds = [...guessedBreedIds];
+    guessedIds.add(breed.id);
+
+    const bothFound = guessedBreedIds.has(target1.id) && guessedBreedIds.has(target2.id);
+    const isLoss    = !bothFound && state.guesses.length >= maxG;
+    if (bothFound)   state.status = 'won';
+    else if (isLoss) state.status = 'lost';
+    saveState();
+
+    const isDone = state.status !== 'playing';
+    appendGuessRow(breed, feedback, isDone, () => {
+      updateGuessesLeft();
+      updateBreedStatus();
+      updatePhotoReveal(isDone);
+      if (isDone) setTimeout(showModal, 600);
+    });
+
+  } else {
+    feedback = computeFeedback(breed, target);
+    state.guesses.push({ breedId: breed.id, feedback });
+    guessedIds.add(breed.id);
+    saveState();
+
+    const isWin  = breed.id === target.id;
+    const isLoss = !isWin && state.guesses.length >= maxG;
+    if (isWin)       state.status = 'won';
+    else if (isLoss) state.status = 'lost';
+    saveState();
+
+    appendGuessRow(breed, feedback, isWin || isLoss, () => {
+      updateGuessesLeft();
+      updatePhotoReveal(state.status !== 'playing');
+      if (state.status !== 'playing') {
+        setTimeout(showModal, 600);
+      }
+    });
+  }
 
   guessInput.value = '';
   hideSuggestions();
@@ -354,7 +526,7 @@ function appendGuessRow(breed, feedback, _isLast, onDone) {
     row.appendChild(makeTile(tile, true, i * TILE_DELAY));
   });
 
-  guessRowsEl.appendChild(row);
+  guessRowsEl.prepend(row);
 
   // Callback after last tile reveal
   const totalDelay = feedback.length * TILE_DELAY + 500;
@@ -381,17 +553,18 @@ function replayGuessRow(breedId, feedback) {
     row.appendChild(makeTile(tile, false, 0));
   });
 
-  guessRowsEl.appendChild(row);
+  guessRowsEl.prepend(row);
 }
 
 // ─── UI State ─────────────────────────────────────────────────────────────────
 
 function updateGuessesLeft() {
-  const remaining = MAX_GUESSES - state.guesses.length;
+  const maxG      = isMultibreed ? 8 : MAX_GUESSES;
+  const remaining = maxG - state.guesses.length;
   guessesLeftEl.textContent = Math.max(0, remaining);
   if (state.status !== 'playing') {
-    guessInput.disabled   = true;
-    submitBtn.disabled    = true;
+    guessInput.disabled = true;
+    submitBtn.disabled  = true;
   }
 }
 
@@ -413,25 +586,42 @@ function showModal() {
   modalWin.classList.toggle('hidden', !won);
   modalLose.classList.toggle('hidden', won);
 
-  if (won) {
+  if (isMultibreed) {
     const count = state.guesses.length;
-    winMessage.textContent = count === 1
-      ? 'First try! Amazing! 🏆'
-      : `Got it in ${count} ${count === 1 ? 'guess' : 'guesses'}!`;
+    if (won) {
+      winMessage.textContent = `Found both breeds in ${count} ${count === 1 ? 'guess' : 'guesses'}!`;
+    } else {
+      const f1 = guessedBreedIds.has(target1.id);
+      const f2 = guessedBreedIds.has(target2.id);
+      if (modalLoseBreeds) {
+        modalLoseBreeds.textContent = f1
+          ? `You found ${target1.name} but not ${target2.name}.`
+          : f2
+            ? `You found ${target2.name} but not ${target1.name}.`
+            : `The breeds were ${target1.name} and ${target2.name}.`;
+      }
+    }
+    modalBreedName.textContent   = `${target1.name} + ${target2.name}`;
+    modalBreedDetail.textContent = dailyConfig?.dogName ? `Meet ${dailyConfig.dogName}!` : '';
+    if (state.photoUrl) { modalPhoto.src = state.photoUrl; modalPhoto.alt = dailyConfig?.dogName ?? ''; }
+    if (dailyConfig?.petfinderUrl) {
+      adoptBtn.href = dailyConfig.petfinderUrl;
+      adoptBreedSpan.textContent = dailyConfig.dogName ?? 'this dog';
+    }
+  } else {
+    if (won) {
+      const count = state.guesses.length;
+      winMessage.textContent = count === 1
+        ? 'First try! Amazing! 🏆'
+        : `Got it in ${count} ${count === 1 ? 'guess' : 'guesses'}!`;
+    }
+    modalBreedName.textContent   = target.name;
+    modalBreedDetail.textContent = `${target.origin} · ${target.lifespanLow}–${target.lifespanHigh} yrs`;
+    if (state.photoUrl) { modalPhoto.src = state.photoUrl; modalPhoto.alt = target.name; }
+    const petfinderUrl = `https://www.petfinder.com/search/dogs-for-adoption/?breed=${encodeURIComponent(target.petfinderName)}&includeOutOfTown=true`;
+    adoptBtn.href = petfinderUrl;
+    adoptBreedSpan.textContent = target.name;
   }
-
-  modalBreedName.textContent   = target.name;
-  modalBreedDetail.textContent = `${target.origin} · ${target.lifespanLow}–${target.lifespanHigh} yrs`;
-
-  // Use cached photo in modal too
-  if (state.photoUrl) {
-    modalPhoto.src = state.photoUrl;
-    modalPhoto.alt = target.name;
-  }
-
-  const petfinderUrl = `https://www.petfinder.com/search/dogs-for-adoption/?breed=${encodeURIComponent(target.petfinderName)}&includeOutOfTown=true`;
-  adoptBtn.href           = petfinderUrl;
-  adoptBreedSpan.textContent = target.name;
 
   resultModal.setAttribute('aria-hidden', 'false');
   startCountdown();
@@ -635,23 +825,34 @@ async function startBonusRound() {
   const newBreed = getRandomBreed();
   if (!newBreed) return;
 
-  target = newBreed;
+  target       = newBreed;
+  isMultibreed = false;
   playedBreedIds.add(target.id);
   isBonus = true;
   bonusCount++;
 
-  state = { guesses: [], status: 'playing', photoUrl: null };
+  state = { guesses: [], status: 'playing', photoUrl: null, guessedBreedIds: [] };
   guessedIds.clear();
+  guessedBreedIds.clear();
+  currentPhotos   = [];
+  currentPhotoIdx = 0;
   guessRowsEl.innerHTML = '';
   guessInput.disabled  = false;
   guessInput.value     = '';
   submitBtn.disabled   = false;
   updateGuessesLeft();
+  resetHint();
   hideModal();
+
+  // Hide daily-mode UI, restore normal caption
+  breedStatusEl.classList.add('hidden');
+  dailyDogInfoEl.classList.add('hidden');
+  photoCaptionEl.classList.remove('hidden');
 
   photoPlaceholder.style.display = '';
   dogPhoto.classList.add('hidden');
   dogPhoto.classList.remove('loaded');
+  dogPhoto.style.transform = '';
   photoPlaceholder.innerHTML = '<div class="paw-spinner">🐾</div><p>Finding a dog...</p>';
   puzzleNumberEl.textContent = `Bonus ${bonusCount}`;
 
@@ -662,6 +863,28 @@ async function startBonusRound() {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 async function init() {
+  await loadDailyConfig();
+
+  if (dailyConfig) {
+    const t1 = BREED_BY_ID[dailyConfig.breed1];
+    const t2 = BREED_BY_ID[dailyConfig.breed2];
+    if (t1 && t2) {
+      isMultibreed = true;
+      target1 = t1;
+      target2 = t2;
+      // Restore guessed breeds from persisted state
+      (state.guessedBreedIds || []).forEach(id => guessedBreedIds.add(id));
+      // Show daily dog info
+      dailyDogNameEl.textContent = `Meet ${dailyConfig.dogName}!`;
+      dailyDogBioEl.textContent  = dailyConfig.bio ?? '';
+      dailyDogInfoEl.classList.remove('hidden');
+      photoCaptionEl.classList.add('hidden');
+      // Show breed status bar
+      breedStatusEl.classList.remove('hidden');
+      updateBreedStatus();
+    }
+  }
+
   puzzleNumberEl.textContent = 0;
 
   // Restore guessed ids

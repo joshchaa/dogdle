@@ -1,0 +1,12 @@
+{
+  "date": "2026-03-16",
+  "dogName": "Biscuit",
+  "bio": "Biscuit is a playful 2-year-old looking for a forever home. He loves fetch, belly rubs, and meeting new friends!",
+  "photos": [
+    "https://images.dog.ceo/breeds/retriever-golden/n02099601_7771.jpg",
+    "https://images.dog.ceo/breeds/poodle-standard/n02113799_485.jpg"
+  ],
+  "breed1": "golden-retriever",
+  "breed2": "poodle",
+  "petfinderUrl": "https://www.petfinder.com/search/dogs-for-adoption/?includeOutOfTown=true"
+}
