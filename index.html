@@ -21,7 +21,10 @@
     <div class="header-inner">
       <div class="logo">🐾 DOGDLE</div>
       <p class="tagline">Play for fun. Adopt for life.</p>
-      <div class="puzzle-info">Puzzle #<span id="puzzle-number">—</span></div>
+      <div class="header-right">
+        <div class="puzzle-info">Puzzle #<span id="puzzle-number">—</span></div>
+        <button id="how-to-play-btn" class="how-to-play-btn" aria-label="How to play">?</button>
+      </div>
     </div>
   </header>
 
@@ -133,6 +136,60 @@
     </section>
 
   </main>
+
+  <!-- How to Play Modal -->
+  <div id="htp-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="htp-title">
+    <div class="modal-backdrop" id="htp-backdrop"></div>
+    <div class="modal-box htp-box">
+      <button class="modal-close" id="htp-close" aria-label="Close">✕</button>
+      <div class="htp-header">
+        <div class="modal-icon">🐾</div>
+        <h2 id="htp-title">How to Play</h2>
+      </div>
+
+      <div class="htp-section-label">Daily Puzzle</div>
+      <ol class="htp-steps">
+        <li>
+          <span class="htp-step-icon">🏠</span>
+          <div><strong>Each day features a real shelter dog</strong> looking for a forever home. Guess their breed in up to 6 tries.</div>
+        </li>
+        <li>
+          <span class="htp-step-icon">🔍</span>
+          <div><strong>Type a breed name</strong> and pick from the list, then hit the arrow to submit.</div>
+        </li>
+        <li>
+          <span class="htp-step-icon">🟩</span>
+          <div><strong>Use the color tiles</strong> to narrow it down:</div>
+        </li>
+      </ol>
+      <div class="htp-legend">
+        <div class="htp-legend-row">
+          <div class="legend-tile green">✓</div>
+          <span>Exact match</span>
+        </div>
+        <div class="htp-legend-row">
+          <div class="legend-tile yellow">~</div>
+          <span>Close / Partial match</span>
+        </div>
+        <div class="htp-legend-row">
+          <div class="legend-tile red">✗</div>
+          <span>No match</span>
+        </div>
+        <div class="htp-legend-row">
+          <div class="legend-tile red" style="font-size:1.1rem">↑↓</div>
+          <span>Guess higher / lower (size, lifespan, etc.)</span>
+        </div>
+      </div>
+      <p class="htp-adopt-note">🐕 After each puzzle, click the link to adopt the dog shown in the puzzle, or <strong>adopt a dog just like it.</strong></p>
+
+      <div class="htp-section-label">Bonus Rounds</div>
+      <div class="htp-bonus-note">
+        <p>Finished the daily puzzle? Hit <strong>Play Another Dog</strong> to keep going. Bonus rounds work the same way, but instead of a shelter dog photo you will see a <strong>representative photo of a random breed</strong> pulled from the web. A fresh breed every round.</p>
+      </div>
+
+      <button id="htp-start-btn" class="htp-start-btn">Let's Play!</button>
+    </div>
+  </div>
 
   <!-- Result Modal -->
   <div id="result-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">

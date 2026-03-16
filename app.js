@@ -163,7 +163,6 @@ function showAlbumPhoto(idx) {
     photoPlaceholder.style.display = 'none';
     dogPhoto.classList.remove('hidden');
     dogPhoto.classList.add('loaded');
-    updatePhotoReveal(state.status !== 'playing');
     updateAlbumNav();
   };
   dogPhoto.src = currentPhotos[idx];
@@ -226,7 +225,7 @@ async function resolveDogCeoPath(hint, breedName) {
 async function fetchDogPhoto() {
   // Daily manual puzzle — always use photos from daily.json
   // (ignore cached photoUrl so swapping dogs mid-day works correctly)
-  if (dailyConfig?.photos?.length) {
+  if (!isBonus && dailyConfig?.photos?.length) {
     currentPhotos  = dailyConfig.photos;
     state.photoUrl = currentPhotos[0];
     saveState();
@@ -259,18 +258,6 @@ async function fetchDogPhoto() {
   return null;
 }
 
-function updatePhotoReveal(forceReveal = false) {
-  if (!dogPhoto.classList.contains('loaded')) return;
-  const maxG = isMultibreed ? 8 : MAX_GUESSES;
-  if (forceReveal || state.status !== 'playing') {
-    dogPhoto.style.transform = 'scale(1.0)';
-    return;
-  }
-  const startScale = 2.4;
-  const progress   = state.guesses.length / maxG;
-  const scale      = startScale - (startScale - 1.0) * progress;
-  dogPhoto.style.transform = `scale(${scale.toFixed(2)})`;
-}
 
 function updateBreedStatus() {
   if (!isMultibreed) return;
@@ -291,7 +278,6 @@ function showPhoto(url) {
     photoPlaceholder.style.display = 'none';
     dogPhoto.classList.remove('hidden');
     dogPhoto.classList.add('loaded');
-    updatePhotoReveal(state.status !== 'playing');
     updateAlbumNav();
   };
   dogPhoto.onerror = () => {
@@ -443,7 +429,6 @@ function submitGuess() {
     appendGuessRow(breed, feedback, isDone, () => {
       updateGuessesLeft();
       updateBreedStatus();
-      updatePhotoReveal(isDone);
       if (isDone) setTimeout(showModal, 600);
     });
 
@@ -461,7 +446,6 @@ function submitGuess() {
 
     appendGuessRow(breed, feedback, isWin || isLoss, () => {
       updateGuessesLeft();
-      updatePhotoReveal(state.status !== 'playing');
       if (state.status !== 'playing') {
         setTimeout(showModal, 600);
       }
@@ -852,7 +836,6 @@ async function startBonusRound() {
   photoPlaceholder.style.display = '';
   dogPhoto.classList.add('hidden');
   dogPhoto.classList.remove('loaded');
-  dogPhoto.style.transform = '';
   photoPlaceholder.innerHTML = '<div class="paw-spinner">🐾</div><p>Finding a dog...</p>';
   puzzleNumberEl.textContent = `Bonus ${bonusCount}`;
 
@@ -906,3 +889,32 @@ async function init() {
 }
 
 init();
+
+// ─── How to Play ──────────────────────────────────────────────────────────────
+
+const htpModal     = document.getElementById('htp-modal');
+const htpClose     = document.getElementById('htp-close');
+const htpBackdrop  = document.getElementById('htp-backdrop');
+const htpStartBtn  = document.getElementById('htp-start-btn');
+const howToPlayBtn = document.getElementById('how-to-play-btn');
+
+const HTP_KEY = 'dogdle_seen_htp';
+
+function openHtp() {
+  htpModal.setAttribute('aria-hidden', 'false');
+}
+
+function closeHtp() {
+  htpModal.setAttribute('aria-hidden', 'true');
+  localStorage.setItem(HTP_KEY, '1');
+}
+
+htpClose.addEventListener('click', closeHtp);
+htpBackdrop.addEventListener('click', closeHtp);
+htpStartBtn.addEventListener('click', closeHtp);
+howToPlayBtn.addEventListener('click', openHtp);
+
+if (!localStorage.getItem(HTP_KEY)) {
+  // Small delay so the page finishes loading before the modal appears
+  setTimeout(openHtp, 600);
+}
