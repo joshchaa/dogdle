@@ -224,19 +224,16 @@ async function resolveDogCeoPath(hint, breedName) {
 }
 
 async function fetchDogPhoto() {
-  if (state.photoUrl) {
-    // Restore album for daily puzzles on page reload
-    if (dailyConfig?.photos?.length) currentPhotos = dailyConfig.photos;
-    return state.photoUrl;
-  }
-
-  // Daily manual puzzle — use provided photos array
+  // Daily manual puzzle — always use photos from daily.json
+  // (ignore cached photoUrl so swapping dogs mid-day works correctly)
   if (dailyConfig?.photos?.length) {
-    currentPhotos   = dailyConfig.photos;
-    state.photoUrl  = currentPhotos[0];
+    currentPhotos  = dailyConfig.photos;
+    state.photoUrl = currentPhotos[0];
     saveState();
     return currentPhotos[0];
   }
+
+  if (state.photoUrl) return state.photoUrl;
 
   try {
     const path = await resolveDogCeoPath(target.dogCeoPath, target.name);
