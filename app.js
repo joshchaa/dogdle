@@ -111,6 +111,7 @@ const photoPlaceholder = document.getElementById('photo-placeholder');
 const puzzleNumberEl   = document.getElementById('puzzle-number');
 const guessInput       = document.getElementById('guess-input');
 const submitBtn        = document.getElementById('submit-btn');
+const giveUpBtn        = document.getElementById('give-up-btn');
 const suggestionsList  = document.getElementById('suggestions');
 const guessRowsEl      = document.getElementById('guess-rows');
 const guessesLeftEl    = document.getElementById('guesses-left-count');
@@ -544,8 +545,9 @@ function updateGuessesLeft() {
   const remaining = maxG - state.guesses.length;
   guessesLeftEl.textContent = Math.max(0, remaining);
   if (state.status !== 'playing') {
-    guessInput.disabled = true;
-    submitBtn.disabled  = true;
+    guessInput.disabled  = true;
+    submitBtn.disabled   = true;
+    giveUpBtn.disabled   = true;
   }
 }
 
@@ -616,6 +618,14 @@ function hideModal() {
 }
 
 modalClose.addEventListener('click', hideModal);
+
+giveUpBtn.addEventListener('click', () => {
+  if (state.status !== 'playing') return;
+  state.status = 'lost';
+  saveState();
+  updateGuessesLeft();
+  showModal();
+});
 modalBackdrop.addEventListener('click', hideModal);
 document.getElementById('keep-playing-btn').addEventListener('click', startBonusRound);
 
@@ -824,6 +834,7 @@ async function startBonusRound() {
   guessInput.disabled  = false;
   guessInput.value     = '';
   submitBtn.disabled   = false;
+  giveUpBtn.disabled   = false;
   updateGuessesLeft();
   resetHint();
   hideModal();

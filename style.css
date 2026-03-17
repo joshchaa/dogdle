@@ -412,12 +412,33 @@ main {
 #submit-btn:active { transform: scale(0.97); }
 #submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
+.input-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .guesses-left {
   font-size: 0.85rem;
   color: var(--text-dim);
 }
 
 .guesses-left strong { color: var(--gold); }
+
+.give-up-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-dim);
+  padding: 4px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.give-up-btn:hover { color: #e07070; border-color: #e07070; }
+.give-up-btn:disabled { opacity: 0; pointer-events: none; }
 
 /* ---- Grid ---- */
 .grid-section {
