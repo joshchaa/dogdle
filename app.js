@@ -81,29 +81,6 @@ function saveState() {
 
 // ─── DOM refs ─────────────────────────────────────────────────────────────────
 
-// ─── Hints ────────────────────────────────────────────────────────────────────
-
-let hintsData = {};
-fetch('./hints.json').then(r => r.json()).then(d => { hintsData = d; }).catch(() => {});
-
-const hintBtn     = document.getElementById('hint-btn');
-const hintDisplay = document.getElementById('hint-display');
-
-hintBtn.addEventListener('click', () => {
-  const hint = hintsData[target.id];
-  hintDisplay.textContent = hint || 'No hint available for this breed.';
-  hintDisplay.classList.remove('hidden');
-  hintBtn.disabled     = true;
-  hintBtn.textContent  = '💡 Hint';
-});
-
-function resetHint() {
-  hintDisplay.classList.add('hidden');
-  hintDisplay.textContent = '';
-  hintBtn.disabled    = false;
-  hintBtn.textContent = '💡 Show Hint';
-}
-
 // ─── DOM refs ─────────────────────────────────────────────────────────────────
 
 const dogPhoto         = document.getElementById('dog-photo');
@@ -836,7 +813,6 @@ async function startBonusRound() {
   submitBtn.disabled   = false;
   giveUpBtn.disabled   = false;
   updateGuessesLeft();
-  resetHint();
   hideModal();
 
   // Hide daily-mode UI, restore normal caption
@@ -879,7 +855,7 @@ async function init() {
     }
   }
 
-  puzzleNumberEl.textContent = 0;
+  puzzleNumberEl.textContent = dailyConfig?.puzzleNumber ?? puzzleNum;
 
   // Restore guessed ids
   state.guesses.forEach(g => guessedIds.add(g.breedId));

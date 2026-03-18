@@ -73,6 +73,10 @@
 
 <div class="card">
   <div>
+    <label>Puzzle Number</label>
+    <input type="number" id="f-puzzle-number" placeholder="1" min="1" />
+  </div>
+  <div>
     <label>Date (YYYY-MM-DD)</label>
     <input type="text" id="f-date" placeholder="2026-03-16" />
   </div>
@@ -185,20 +189,21 @@
   setupBreedAC('f-breed2', 'f-breed2-id', 'sug-2');
 
   window.generate = function() {
-    const date      = document.getElementById('f-date').value.trim();
-    const dogName   = document.getElementById('f-name').value.trim();
-    const bio       = document.getElementById('f-bio').value.trim();
-    const photos    = document.getElementById('f-photos').value.split('\n').map(s => s.trim()).filter(Boolean);
-    const breed1    = document.getElementById('f-breed1-id').value.trim();
-    const breed2    = document.getElementById('f-breed2-id').value.trim();
-    const petfinder = document.getElementById('f-petfinder').value.trim();
+    const puzzleNumber = parseInt(document.getElementById('f-puzzle-number').value.trim(), 10);
+    const date         = document.getElementById('f-date').value.trim();
+    const dogName      = document.getElementById('f-name').value.trim();
+    const bio          = document.getElementById('f-bio').value.trim();
+    const photos       = document.getElementById('f-photos').value.split('\n').map(s => s.trim()).filter(Boolean);
+    const breed1       = document.getElementById('f-breed1-id').value.trim();
+    const breed2       = document.getElementById('f-breed2-id').value.trim();
+    const petfinder    = document.getElementById('f-petfinder').value.trim();
 
-    if (!date || !dogName || !photos.length || !breed1 || !breed2) {
-      alert('Please fill in: date, dog name, at least one photo URL, and both breeds.');
+    if (!puzzleNumber || !date || !dogName || !photos.length || !breed1 || !breed2) {
+      alert('Please fill in: puzzle number, date, dog name, at least one photo URL, and both breeds.');
       return;
     }
 
-    const json = JSON.stringify({ date, dogName, bio, photos, breed1, breed2, petfinderUrl: petfinder }, null, 2);
+    const json = JSON.stringify({ puzzleNumber, date, dogName, bio, photos, breed1, breed2, petfinderUrl: petfinder }, null, 2);
     const out  = document.getElementById('output');
     out.textContent = json;
     out.style.display = 'block';
