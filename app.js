@@ -6,6 +6,11 @@ const MAX_GUESSES = 6;
 
 // ─── Daily Puzzle ─────────────────────────────────────────────────────────────
 
+function getLocalDateStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 function getDayNumber() {
   const epoch = new Date(2025, 0, 1); // Day 0 = Jan 1, 2025
   const now   = new Date();
@@ -33,7 +38,7 @@ function getOverrideBreed() {
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
-const todayKey   = `dogdle-${new Date().toISOString().slice(0, 10)}`;
+const todayKey   = `dogdle-${getLocalDateStr()}`;
 let   target     = getOverrideBreed() ?? getDailyBreed();
 const puzzleNum  = getDayNumber();
 
@@ -51,31 +56,34 @@ let dailyConfig = null;
 
 async function loadDailyConfig() {
   try {
-    const res = await fetch('./daily.json');
+    // Timestamp cache-bust + no-store forces past every browser and CDN cache,
+    // including same-day puzzle updates on GitHub Pages.
+    const res = await fetch(`./daily.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) return;
     const data = await res.json();
-    const today = new Date().toISOString().slice(0, 10);
-    if (data.date === today) dailyConfig = data;
+    if (data.date === getLocalDateStr()) dailyConfig = data;
   } catch {}
 }
 
-let state = loadState() || {
-  guesses:         [],   // [{ breedId, feedback, foundTargetId }]
-  status:          'playing',
-  photoUrl:        null,
-  guessedBreedIds: []
-};
+// State is initialised inside init() once we know which puzzle is active.
+// This prevents a stale win/loss from a different puzzle being loaded.
+let state    = { guesses: [], status: 'playing', photoUrl: null, guessedBreedIds: [] };
+let puzzleId = ''; // set in init() — uniquely identifies the active puzzle
 
-function loadState() {
+function loadState(expectedPuzzleId) {
   try {
     const raw = localStorage.getItem(todayKey);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) return null;
+    const { _pid, ...data } = JSON.parse(raw);
+    // Discard saved state if it belongs to a different puzzle
+    if (_pid !== expectedPuzzleId) return null;
+    return data;
   } catch { return null; }
 }
 
 function saveState() {
   if (isBonus) return;
-  try { localStorage.setItem(todayKey, JSON.stringify(state)); }
+  try { localStorage.setItem(todayKey, JSON.stringify({ ...state, _pid: puzzleId })); }
   catch {}
 }
 
@@ -834,6 +842,13 @@ async function startBonusRound() {
 
 async function init() {
   await loadDailyConfig();
+
+  // Compute puzzle identity and load matching saved state (discards stale wins)
+  puzzleId = dailyConfig
+    ? `daily-${dailyConfig.date}-${dailyConfig.breed1}-${dailyConfig.breed2}`
+    : `auto-${puzzleNum}-${target.id}`;
+  const saved = loadState(puzzleId);
+  if (saved) state = saved;
 
   if (dailyConfig) {
     const t1 = BREED_BY_ID[dailyConfig.breed1];
