@@ -61,7 +61,12 @@ async function loadDailyConfig() {
     const res = await fetch(`./daily.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) return;
     const data = await res.json();
-    if (data.date === getLocalDateStr()) dailyConfig = data;
+    const today = getLocalDateStr();
+    // Support both array (queue) and legacy single-object formats
+    const entry = Array.isArray(data)
+      ? data.find(p => p.date === today)
+      : (data.date === today ? data : null);
+    if (entry) dailyConfig = entry;
   } catch {}
 }
 

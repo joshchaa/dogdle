@@ -67,6 +67,10 @@
 
 <h1>🐾 Daily Puzzle Editor</h1>
 <p class="today" id="today-label"></p>
+<div id="queue-preview" style="width:100%;max-width:600px;display:none">
+  <h3 style="color:#4ecdc4;font-size:0.9rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Queued Puzzles</h3>
+  <div id="queue-list" style="display:flex;flex-direction:column;gap:6px;font-size:0.85rem"></div>
+</div>
 <div class="localhost-warning" id="localhost-warning">
   ⚠️ This page is only intended for use on localhost.
 </div>
@@ -133,14 +137,41 @@
 
 <script type="module">
   import { BREEDS } from './breeds.js';
+  // Top-level await is allowed in modules
 
-  const today = new Date().toISOString().slice(0, 10);
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   document.getElementById('today-label').textContent = `Today: ${today}`;
   document.getElementById('f-date').value = today;
 
   if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1') {
     document.getElementById('localhost-warning').style.display = 'block';
   }
+
+  // Load and display existing queue
+  let existingQueue = [];
+  try {
+    const res = await fetch(`./daily.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (res.ok) {
+      const data = await res.json();
+      existingQueue = Array.isArray(data) ? data : [data];
+      existingQueue.sort((a, b) => a.date.localeCompare(b.date));
+      const list = document.getElementById('queue-list');
+      list.innerHTML = existingQueue.map(p => {
+        const isPast   = p.date < today;
+        const isToday  = p.date === today;
+        const label    = isPast ? '(past)' : isToday ? '(today)' : '';
+        const color    = isPast ? '#555' : isToday ? '#d4af37' : '#4ecdc4';
+        return `<div style="background:#16213e;border-radius:6px;padding:8px 12px;border-left:3px solid ${color}">
+          <span style="color:${color};font-weight:700">${p.date}</span>
+          <span style="color:#8899aa;margin-left:6px">${label}</span>
+          — <strong style="color:#f0f0f0">#${p.puzzleNumber} ${p.dogName}</strong>
+          <span style="color:#8899aa;font-size:0.8rem;margin-left:6px">${p.breed1} + ${p.breed2}</span>
+        </div>`;
+      }).join('');
+      document.getElementById('queue-preview').style.display = 'block';
+    }
+  } catch {}
 
   // Preview photos on URL input
   document.getElementById('f-photos').addEventListener('input', e => {
@@ -203,7 +234,14 @@
       return;
     }
 
-    const json = JSON.stringify({ puzzleNumber, date, dogName, bio, photos, breed1, breed2, petfinderUrl: petfinder }, null, 2);
+    const newEntry = { puzzleNumber, date, dogName, bio, photos, breed1, breed2, petfinderUrl: petfinder };
+
+    // Merge into existing queue: replace entry for same date, otherwise append
+    const updatedQueue = existingQueue.filter(p => p.date !== date);
+    updatedQueue.push(newEntry);
+    updatedQueue.sort((a, b) => a.date.localeCompare(b.date));
+
+    const json = JSON.stringify(updatedQueue, null, 2);
     const out  = document.getElementById('output');
     out.textContent = json;
     out.style.display = 'block';

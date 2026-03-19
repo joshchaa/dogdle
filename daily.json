@@ -1,15 +1,28 @@
-{
-  "puzzleNumber": 3,
-  "date": "2026-03-18",
-  "dogName": "Mozart",
+[
+  {
+    "puzzleNumber": 3,
+    "date": "2026-03-18",
+    "dogName": "Mozart",
+    "bio": "",
+    "photos": [
+      "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/0a80d379-0d06-45ff-b170-daeca1f632aa.jpeg?versionId=a8cm90M3db74eqXsC2Me4YeskYWSmIIo",
+      "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/741b3e47-f803-45cd-862d-cc82579281ec.jpeg?versionId=nIRiAdiah_PGVUT1sq6Gge6QadOHu1G5",
+      "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/14621040-67a9-45fe-9e80-605b2908896b.jpeg?versionId=OnyW0btwP9ZZrV60coFsAyRibpDwdQx_",
+      "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/4f88f328-f828-431f-97e1-4df3d14613f1.jpeg?versionId=619wZYLNl4MBuexIt_VhFOdIz2UNYqUI"
+    ],
+    "breed1": "pit-bull",
+    "breed2": "boxer",
+    "petfinderUrl": "https://www.petfinder.com/dog/mozart-3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/ny/manhattan/texoma-dog-ranch-tx2377/details/"
+  },
+  {
+  "date": "2026-03-19",
+  "dogName": "Gracie",
   "bio": "",
   "photos": [
-    "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/0a80d379-0d06-45ff-b170-daeca1f632aa.jpeg?versionId=a8cm90M3db74eqXsC2Me4YeskYWSmIIo",
-    "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/741b3e47-f803-45cd-862d-cc82579281ec.jpeg?versionId=nIRiAdiah_PGVUT1sq6Gge6QadOHu1G5",
-    "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/14621040-67a9-45fe-9e80-605b2908896b.jpeg?versionId=OnyW0btwP9ZZrV60coFsAyRibpDwdQx_",
-    "https://dbw3zep4prcju.cloudfront.net/animal/3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/image/4f88f328-f828-431f-97e1-4df3d14613f1.jpeg?versionId=619wZYLNl4MBuexIt_VhFOdIz2UNYqUI"
+    "https://dbw3zep4prcju.cloudfront.net/animal/244761ea-f89f-4ed9-a487-355f336c8bc6/image/1a959027-30e3-4189-82b4-4ca1f07e2265.jpeg?versionId=_uLLpuMPMOdUNeZK6mloIXV3s32LbHVn"
   ],
-  "breed1": "pit-bull",
-  "breed2": "boxer",
-  "petfinderUrl": "https://www.petfinder.com/dog/mozart-3b3b58b8-e90b-4be7-b6d7-eb3a320d91ab/ny/manhattan/texoma-dog-ranch-tx2377/details/"
+  "breed1": "belgian-malinois",
+  "breed2": "german-shepherd",
+  "petfinderUrl": "https://www.petfinder.com/dog/gracie-244761ea-f89f-4ed9-a487-355f336c8bc6/ca/los-angeles/joyful-pets-animal-rescue-ma499/details/"
 }
+]
