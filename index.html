@@ -64,10 +64,6 @@
           <div id="breed-slot-2" class="breed-slot">?</div>
         </div>
       </div>
-      <div class="hint-section">
-        <button id="hint-btn" class="hint-btn">💡 Show Hint</button>
-        <div id="hint-display" class="hint-display hidden"></div>
-      </div>
     </section>
 
     <!-- Input -->
@@ -150,10 +146,6 @@
       <a href="https://www.aspca.org/donate" target="_blank" rel="noopener noreferrer" class="footer-donate-btn">
         ❤️ Donate to the ASPCA
       </a>
-      <div class="footer-links">
-        <button id="feedback-btn" class="footer-link-btn">💬 Leave Feedback</button>
-        <button id="suggest-btn" class="footer-link-btn">🐕 Suggest a Dog</button>
-      </div>
     </div>
   </footer>
 
@@ -208,68 +200,6 @@
       </div>
 
       <button id="htp-start-btn" class="htp-start-btn">Let's Play!</button>
-    </div>
-  </div>
-
-  <!-- Feedback Modal -->
-  <div id="feedback-modal" class="modal" aria-hidden="true" role="dialog">
-    <div class="modal-backdrop" id="feedback-backdrop"></div>
-    <div class="modal-box">
-      <button class="modal-close" id="feedback-close" aria-label="Close">✕</button>
-      <div class="modal-icon">💬</div>
-      <h2 class="form-modal-title">Leave Feedback</h2>
-      <p class="form-modal-subtitle">Bug reports, ideas, compliments — we read it all.</p>
-      <form id="feedback-form" class="modal-form">
-        <div class="form-group">
-          <label for="feedback-msg">Your feedback <span class="req">*</span></label>
-          <textarea id="feedback-msg" name="message" required placeholder="What's on your mind?"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="feedback-email">Email <span class="opt">(optional)</span></label>
-          <input type="email" id="feedback-email" name="email" placeholder="for follow-up" />
-        </div>
-        <button type="submit" class="form-submit-btn">Send Feedback</button>
-        <p id="feedback-success" class="form-success hidden">Thanks! We read every message. 🐾</p>
-      </form>
-    </div>
-  </div>
-
-  <!-- Suggest a Dog Modal -->
-  <div id="suggest-modal" class="modal" aria-hidden="true" role="dialog">
-    <div class="modal-backdrop" id="suggest-backdrop"></div>
-    <div class="modal-box">
-      <button class="modal-close" id="suggest-close" aria-label="Close">✕</button>
-      <div class="modal-icon">🐕</div>
-      <h2 class="form-modal-title">Suggest a Shelter Dog</h2>
-      <p class="form-modal-subtitle">Know a pup that deserves the spotlight?</p>
-      <form id="suggest-form" class="modal-form">
-        <div class="form-group">
-          <label for="suggest-dog">Dog's name <span class="req">*</span></label>
-          <input type="text" id="suggest-dog" name="dog_name" required placeholder="e.g. Biscuit" />
-        </div>
-        <div class="form-group">
-          <label for="suggest-shelter">Shelter name <span class="req">*</span></label>
-          <input type="text" id="suggest-shelter" name="shelter" required placeholder="e.g. Austin Pets Alive" />
-        </div>
-        <div class="form-group">
-          <label for="suggest-location">Location <span class="req">*</span></label>
-          <input type="text" id="suggest-location" name="location" required placeholder="City, State" />
-        </div>
-        <div class="form-group">
-          <label for="suggest-photo">Photo URL <span class="opt">(optional)</span></label>
-          <input type="url" id="suggest-photo" name="photo_url" placeholder="https://..." />
-        </div>
-        <div class="form-group">
-          <label for="suggest-notes">Anything else? <span class="opt">(optional)</span></label>
-          <textarea id="suggest-notes" name="notes" placeholder="Tell us about this dog..."></textarea>
-        </div>
-        <div class="form-group">
-          <label for="suggest-email">Your email <span class="opt">(optional)</span></label>
-          <input type="email" id="suggest-email" name="email" placeholder="in case we have questions" />
-        </div>
-        <button type="submit" class="form-submit-btn">Submit Dog</button>
-        <p id="suggest-success" class="form-success hidden">Woof! We will check them out. 🐾</p>
-      </form>
     </div>
   </div>
 

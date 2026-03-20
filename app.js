@@ -88,7 +88,10 @@ function loadState(expectedPuzzleId) {
 
 function saveState() {
   if (isBonus) return;
-  try { localStorage.setItem(todayKey, JSON.stringify({ ...state, _pid: puzzleId })); }
+  // Never persist photoUrl — always re-derive it from dailyConfig or dog.ceo on load
+  // so a stale photo can never block a new puzzle from showing.
+  const { photoUrl: _omit, ...stateToSave } = state;
+  try { localStorage.setItem(todayKey, JSON.stringify({ ...stateToSave, _pid: puzzleId })); }
   catch {}
 }
 
@@ -896,6 +899,14 @@ async function init() {
 }
 
 init();
+
+// ─── Midnight Auto-Reload ─────────────────────────────────────────────────────
+// If a player leaves the tab open overnight, reload when the date changes so
+// they automatically get the new daily puzzle without clearing localStorage.
+const _initDate = getLocalDateStr();
+setInterval(() => {
+  if (getLocalDateStr() !== _initDate) location.reload();
+}, 60_000);
 
 // ─── How to Play ──────────────────────────────────────────────────────────────
 
