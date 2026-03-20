@@ -1,2 +1,6 @@
+// This command will clear all local and session storage, and then reload the page.
+// F12 to open the console, then paste this command and press Enter to execute it.
+
 localStorage.clear(); sessionStorage.clear(); location.reload(true);
+
 

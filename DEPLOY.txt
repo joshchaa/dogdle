@@ -5,7 +5,7 @@ After editing any files locally, run these 3 commands:
     cd /Users/joshuacharron/Desktop/DOGDLE
     git add .
     git commit -m "describe what you changed"
-    git push
+    git pushi
 
 GitHub Pages will rebuild the site automatically within ~1 minute.
 

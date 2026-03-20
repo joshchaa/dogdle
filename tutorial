@@ -1,0 +1,60 @@
+The Files
+breeds.js — The database. Every breed is an object with ~12 fields: display name, sizeOrder/shedOrder/groomOrder/activeOrder (integers for comparison), coat (categorical), lifespanLow/lifespanHigh, origin, originRegion, dogCeoPath (the API path for photos), and petfinderName. It exports BREEDS (array), BREED_BY_ID (lookup by id string), and BREED_BY_NAME (lookup by lowercase name). This is what you edit when adding new breeds.
+
+feedback.js — Pure logic, no DOM. computeFeedback(guess, target) compares two breed objects and returns an array of 7 tile objects, each with { category, value, result, arrow }. Result is "correct", "partial", or "wrong". Also exports generateShareText() which builds the emoji grid for clipboard sharing.
+
+daily.json — The daily puzzle config. You update this every day. Fields: date (must match today or it's ignored), dogName, bio, photos (array of direct image URLs), breed1/breed2 (breed IDs from breeds.js), petfinderUrl. If this file's date doesn't match today, the game falls back to automatic breed selection.
+
+hints.json — A flat object mapping breed ID to a hint string. Shown when the player clicks "Show Hint."
+
+app.js — Everything else. Here's the flow:
+
+How a Game Session Works
+On load, init() runs:
+
+Fetches daily.json — if today's date matches, sets dailyConfig and switches to multibreed mode (isMultibreed = true), sets target1 and target2
+Loads saved state from localStorage (keyed by today's date like dogdle-2026-03-16) — so returning players pick up where they left off
+Replays any existing guesses instantly (no animation) to restore the grid
+Fetches and displays the dog photo
+State object lives in memory and localStorage:
+
+
+{ guesses: [...], status: 'playing'|'won'|'lost', photoUrl: null }
+State is only saved for daily puzzles — bonus rounds are ephemeral.
+
+Photo loading has two paths:
+
+Daily puzzle with dailyConfig.photos → use those URLs directly (your Petfinder CDN photos)
+Everything else (fallback daily + all bonus rounds) → call resolveDogCeoPath() which hits the dog.ceo API to find the right path, then fetches a random image from that breed's gallery
+On each guess, submitGuess():
+
+Validates the input against BREED_BY_NAME
+Calls computeFeedback() to get the 7 tile results
+Pushes to state.guesses, saves state
+Animates the row via appendGuessRow() (tiles flip in one at a time with staggered delays)
+Checks win/loss condition, then calls showModal() after 600ms
+Multibreed mode (today's puzzle) is more complex — the player must find both target1 and target2. Each guess is compared against whichever remaining target it scores best against. Win = both found, loss = 8 guesses used without finding both.
+
+The Two Modes
+Daily	Bonus
+isBonus	false	true
+Target	From daily.json (two breeds)	Random single breed
+Photo	Your CDN photos	dog.ceo random image
+State saved	Yes (localStorage)	No
+Counter incremented	Yes (Firebase)	No
+Guesses	8	6
+Bonus rounds start when the player clicks "Play Another Dog". startBonusRound() picks a random unused breed via getRandomBreed(), resets all UI state, re-enables the input, and fetches a fresh dog.ceo photo.
+
+The New Stuff (what we just added)
+Solved counter — On game complete, if !isBonus, writes true to Firebase/solved/{puzzleNum}/{sessionId}. Reading that node with ?shallow=true returns just the keys, so Object.keys(data).length = unique completions. Session ID is a UUID stored in localStorage so one player = one count even across page reloads.
+
+Forms — Submit via POST to Formspree endpoints. Nothing is stored in your code; it goes straight to your Formspree dashboard/email.
+
+Plausible — The script tag is on every page load. trackEvent() fires a custom "Game Complete" event with result and mode props whenever showModal() runs, so you can filter by daily vs bonus wins/losses in the Plausible dashboard.
+
+Your Daily Workflow
+To publish a new puzzle, you just edit daily.json:
+
+Change date to today
+Fill in the dog's name, bio, photo URLs, two breed IDs, and the Petfinder URL
+Push to GitHub — that's it

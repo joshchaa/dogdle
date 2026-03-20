@@ -24,5 +24,18 @@
   "breed1": "belgian-malinois",
   "breed2": "german-shepherd",
   "petfinderUrl": "https://www.petfinder.com/dog/gracie-244761ea-f89f-4ed9-a487-355f336c8bc6/ca/los-angeles/joyful-pets-animal-rescue-ma499/details/"
-}
+},
+{
+    "puzzleNumber": 4,
+    "date": "2026-03-20",
+    "dogName": "Marty",
+    "bio": "Marty is a 1 year old male Chiweenie Mix who was rescued from Palmdale along with 13 other dogs, and he’s now ready for a fresh start. He’s a friendly, easygoing pup who loves kids and other dogs, and nothing makes him happier than curling up in a warm dog bed. With his sweet personality and loving nature, Marty is the perfect little companion for a family looking to welcome a loyal new friend.",
+    "photos": [
+      "https://dbw3zep4prcju.cloudfront.net/animal/5da2aed9-7f22-4da4-9779-a755b09257e8/image/ef7954c9-21ee-4d39-a6f7-47d12bca1998.jpg?versionId=GyVm7vsAriQKeWtSqsBDNzfO2To4Ro47",
+      "https://dbw3zep4prcju.cloudfront.net/animal/5da2aed9-7f22-4da4-9779-a755b09257e8/image/4babacfa-4443-4abe-b3ec-407b2c5ed7ec.jpg?versionId=AHTL_YNlzYfHmOyIMbYJwjBCtJpwhQuJ"
+    ],
+    "breed1": "chihuahua",
+    "breed2": "dachshund",
+    "petfinderUrl": "https://www.petfinder.com/dog/marty-5da2aed9-7f22-4da4-9779-a755b09257e8/ca/inglewood/the-lovejoy-foundation-inc-facility-clubhouse-ca1750/details/"
+  }
 ]
