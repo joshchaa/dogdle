@@ -1,0 +1,234 @@
+[
+  {
+  "puzzleNumber": 1,
+  "date": "2026-03-22",
+  "dogName": "Elton",
+  "bio": "",
+  "photos": [
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/80032197.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/54672453.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/54672454.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/54672455.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/84613016.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/87351332.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/91076788.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12661/12661063/95285722.jpg"
+  ],
+  "breed1": "australian-cattle-dog",
+  "breed2": "labrador-retriever",
+  "adoptionUrl": "http://www.bestfriends.org/animals/detail?AnimalID=12661063",
+  "orgName": "Best Friends Animal Society",
+  "orgUrl": "http://www.bestfriends.org"
+}
+,{
+  "puzzleNumber": 2,
+  "date": "2026-03-22",
+  "dogName": "LuLu",
+  "bio": "",
+  "photos": [
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12668/12668604/97439602.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12668/12668604/96988953.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12668/12668604/97332568.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12668/12668604/97352523.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12668/12668604/97352524.jpg",
+    "https://cdn.rescuegroups.org/6685/pictures/animals/12668/12668604/97439603.jpg"
+  ],
+  "breed1": "german-shepherd",
+  "breed2": "chihuahua",
+  "adoptionUrl": "http://www.bestfriends.org/animals/detail?AnimalID=12668604",
+  "orgName": "Best Friends Animal Society",
+  "orgUrl": "http://www.bestfriends.org"
+}
+,{
+  "puzzleNumber": 3,
+  "date": "2026-03-22",
+  "dogName": "Suncrest",
+  "bio": "",
+  "photos": [
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101713836.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101713838.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101713844.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101713850.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101003785.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101003786.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/101003791.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/100033771.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/99989572.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/100033770.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/100034184.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/100033768.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/99989573.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/13033/13033453/100033777.jpg"
+  ],
+  "breed1": "cocker-spaniel",
+  "breed2": "labrador-retriever",
+  "adoptionUrl": "http://www.angelsrescue.org/animals/detail?AnimalID=13033453",
+  "orgName": "Angels Among Us Pet Rescue",
+  "orgUrl": "http://www.angelsrescue.org"
+}
+,{
+  "puzzleNumber": 4,
+  "date": "2026-03-22",
+  "dogName": "Zeus",
+  "bio": "",
+  "photos": [
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/54684175.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/92595374.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/92674219.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/92674220.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/92674221.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/92674222.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/92904857.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93186166.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93186168.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93186169.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93186170.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222584.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222586.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222587.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222589.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222591.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222592.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93222593.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93375877.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93375878.jpg",
+    "https://cdn.rescuegroups.org/8515/pictures/animals/12650/12650414/93375879.jpg"
+  ],
+  "breed1": "german-shepherd",
+  "breed2": "american-staffordshire-terrier",
+  "adoptionUrl": "https://bestfriends.org/salt-lake-city/animals/detail?AnimalID=12650414",
+  "orgName": "Best Friends Animal Society Utah",
+  "orgUrl": "https://bestfriends.org/salt-lake-city"
+},
+  {
+    "puzzleNumber": 5,
+    "date": "2026-03-23",
+    "dogName": "Marty",
+    "bio": "Marty is a 1 year old male mix who was rescued from Palmdale along with 13 other dogs, and he's now ready for a fresh start. He's a friendly, easygoing pup who loves kids and other dogs, and nothing makes him happier than curling up in a warm dog bed.",
+    "photos": [
+      "https://dbw3zep4prcju.cloudfront.net/animal/5da2aed9-7f22-4da4-9779-a755b09257e8/image/ef7954c9-21ee-4d39-a6f7-47d12bca1998.jpg?versionId=GyVm7vsAriQKeWtSqsBDNzfO2To4Ro47",
+      "https://dbw3zep4prcju.cloudfront.net/animal/5da2aed9-7f22-4da4-9779-a755b09257e8/image/4babacfa-4443-4abe-b3ec-407b2c5ed7ec.jpg?versionId=AHTL_YNlzYfHmOyIMbYJwjBCtJpwhQuJ"
+    ],
+    "breed1": "chihuahua",
+    "breed2": "dachshund",
+    "adoptionUrl": "https://rescuegroups.org/animals/detail/placeholder-3/",
+    "orgName": "",
+    "orgUrl": ""
+  },
+  {
+    "puzzleNumber": 6,
+    "date": "2026-03-24",
+    "dogName": "Doli",
+    "bio": "",
+    "photos": [
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/89452172.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/89452180.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/89452175.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/89452168.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/87154693.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/89452174.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/89452178.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/88911016.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/88910877.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/88910966.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/87154684.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/88910967.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/87154687.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/87154694.jpg",
+      "https://cdn.rescuegroups.org/8099/pictures/animals/10131/10131543/35520048.jpg"
+    ],
+    "breed1": "siberian-husky",
+    "breed2": "german-shepherd",
+    "adoptionUrl": "http://www.angelsrescue.org/animals/detail?AnimalID=10131543",
+    "orgName": "Angels Among Us Pet Rescue",
+    "orgUrl": "http://www.angelsrescue.org"
+  },
+  {
+    "puzzleNumber": 7,
+    "date": "2026-03-25",
+    "dogName": "Lila Frick",
+    "bio": "Adoption Donation&nbsp; \n&nbsp;$\n&nbsp; 299&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;\n&nbsp; \n\n\n\n\n\n\n\n\nLocated: in Rhode Island &nbsp;&nbsp; \n\n\n\n\n\n\n\nAge:&nbsp; 9 years 6 months old&nbsp; &nbsp;&nbsp;\n\n\n \n\n\n\n\nWeight: 30 lbs\n \n \n \n\n\n\n&nbsp;\n\nAdorable & sweet! I'm looking for some f",
+    "photos": [
+      "https://cdn.rescuegroups.org/1059/pictures/animals/11066/11066158/42525250.jpg",
+      "https://cdn.rescuegroups.org/1059/pictures/animals/11066/11066158/42426834.jpg",
+      "https://cdn.rescuegroups.org/1059/pictures/animals/11066/11066158/42426832.jpg",
+      "https://cdn.rescuegroups.org/1059/pictures/animals/11066/11066158/42426833.jpg"
+    ],
+    "breed1": "border-collie",
+    "breed2": "australian-cattle-dog",
+    "adoptionUrl": "http://www.FohaRI.org/animals/detail?AnimalID=11066158",
+    "orgName": "Friends of Homeless Animals, Inc.",
+    "orgUrl": "http://www.FohaRI.org"
+  },
+  {
+    "puzzleNumber": 8,
+    "date": "2026-03-26",
+    "dogName": "Admiral",
+    "bio": "",
+    "photos": [
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/99109822.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/102410760.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/86556446.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/98171717.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/93993433.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/93897309.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/92082266.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/85992592.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/71888402.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/84581959.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/71871751.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/80518178.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/76683531.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/44929004.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/76683525.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/76683528.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/76683530.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/85992591.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/86556447.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/92082259.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/92082261.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/92082262.jpg",
+      "https://cdn.rescuegroups.org/4264/pictures/animals/11245/11245824/92082264.jpg"
+    ],
+    "breed1": "american-staffordshire-terrier",
+    "breed2": "chow-chow",
+    "adoptionUrl": "https://reachoutrescue.org/animals/detail?AnimalID=11245824",
+    "orgName": "Reach Out Rescue & Resources",
+    "orgUrl": "http://www.reachoutrescue.org/"
+  },
+  {
+    "puzzleNumber": 9,
+    "date": "2026-03-27",
+    "dogName": "Chase",
+    "bio": "",
+    "photos": [
+      "https://cdn.rescuegroups.org/7009/pictures/animals/11827/11827037/47751272.jpg",
+      "https://cdn.rescuegroups.org/7009/pictures/animals/11827/11827037/47751274.jpg",
+      "https://cdn.rescuegroups.org/7009/pictures/animals/11827/11827037/47751275.jpg",
+      "https://cdn.rescuegroups.org/7009/pictures/animals/11827/11827037/47751277.jpg"
+    ],
+    "breed1": "greyhound",
+    "breed2": "jack-russell-terrier",
+    "adoptionUrl": "https://amazinggracebullyrescue.rescuegroups.org/animals/detail?AnimalID=11827037",
+    "orgName": "Amazing Grace Bully Rescue",
+    "orgUrl": "http://www.amazinggracebullyrescue.com"
+  },
+  {
+    "puzzleNumber": 10,
+    "date": "2026-03-28",
+    "dogName": "Blade",
+    "bio": "Blade is a very happy go lucky dog.&nbsp; He loves and will do anything for a tennis ball.&nbsp; He is quite playful and would make a great addition to a family",
+    "photos": [
+      "https://cdn.rescuegroups.org/8552/pictures/animals/12299/12299665/101487212.jpg",
+      "https://cdn.rescuegroups.org/8552/pictures/animals/12299/12299665/76098856.jpg",
+      "https://cdn.rescuegroups.org/8552/pictures/animals/12299/12299665/52014236.jpg",
+      "https://cdn.rescuegroups.org/8552/pictures/animals/12299/12299665/52014237.jpg",
+      "https://cdn.rescuegroups.org/8552/pictures/animals/12299/12299665/52014238.jpg"
+    ],
+    "breed1": "german-shepherd",
+    "breed2": "labrador-retriever",
+    "adoptionUrl": "http://arfms.org/animals/detail?AnimalID=12299665",
+    "orgName": "Animal Rescue Fund of MS",
+    "orgUrl": "http://arfms.org"
+  }
+]

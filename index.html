@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOGDLE — Guess the Shelter Dog's Breed!</title>
+  <meta name="description" content="A daily dog breed guessing game. Guess the breed, learn about dogs, and find shelter pups that need a home!" />
+  <meta property="og:title" content="DOGDLE — Daily Dog Breed Guessing Game" />
+  <meta property="og:description" content="Guess the shelter dog's breed in 8 tries. Play for fun. Adopt for life." />
+  <meta property="og:url" content="https://dogdle.org" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="DOGDLE — Daily Dog Breed Guessing Game" />
+  <meta name="twitter:description" content="Guess the shelter dog's breed in 8 tries. Play for fun. Adopt for life." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://analytics.google.com; img-src 'self' data: https: http:; style-src 'self' 'unsafe-inline'; frame-ancestors 'none';" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-44F70WLCXR"></script>
+  <script src="analytics.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo">🐾 DOGDLE</div>
+      <p class="tagline">Play for fun. Adopt for life.</p>
+      <div class="header-right">
+        <div class="puzzle-meta">
+          <div class="puzzle-info">Puzzle #<span id="puzzle-number">—</span></div>
+        </div>
+        <button id="archive-btn" class="archive-btn" aria-label="Archive">📅</button>
+        <button id="how-to-play-btn" class="how-to-play-btn" aria-label="How to play">?</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Disclaimer banner -->
+  <div class="disclaimer-banner">
+    ⚠️ Some adoption links may be dead or unavailable. We are working on a fix!
+  </div>
+
+  <!-- Archive date banner (shown when viewing a past puzzle) -->
+  <div id="viewing-date-banner" class="viewing-date-banner hidden">
+    <span id="viewing-date-label"></span>
+    <button id="back-today-btn" class="back-today-btn">Back to Today</button>
+  </div>
+
+  <main>
+
+    <!-- Dog Photo -->
+    <section class="photo-section">
+      <div class="photo-frame">
+        <img id="dog-photo" class="dog-photo hidden" src="" alt="Shelter dog photo" />
+        <div id="photo-placeholder" class="photo-placeholder">
+          <div class="paw-spinner">🐾</div>
+          <p>Finding a dog...</p>
+        </div>
+        <div id="album-nav" class="album-nav hidden">
+          <button id="album-prev" class="album-btn" aria-label="Previous photo">&#8249;</button>
+          <span id="album-counter" class="album-counter">1 / 1</span>
+          <button id="album-next" class="album-btn" aria-label="Next photo">&#8250;</button>
+        </div>
+      </div>
+      <div id="daily-dog-info" class="daily-dog-info hidden">
+        <h3 id="daily-dog-name" class="daily-dog-name"></h3>
+        <p id="daily-dog-bio" class="daily-dog-bio"></p>
+      </div>
+      <p id="photo-caption" class="photo-caption">What breed is this dog?</p>
+      <div id="breed-status" class="breed-status hidden">
+        <span class="breed-status-label">Find both breeds:</span>
+        <div class="breed-slots">
+          <div id="breed-slot-1" class="breed-slot">?</div>
+          <span class="breed-status-sep">+</span>
+          <div id="breed-slot-2" class="breed-slot">?</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Input -->
+    <section class="input-section">
+      <div class="input-wrapper">
+        <div class="autocomplete-container">
+          <input
+            type="text"
+            id="guess-input"
+            placeholder="Type a breed name..."
+            autocomplete="off"
+            aria-label="Dog breed guess"
+            aria-autocomplete="list"
+            aria-controls="suggestions"
+          />
+          <ul id="suggestions" class="suggestions hidden" role="listbox"></ul>
+        </div>
+        <button id="submit-btn" aria-label="Submit guess">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="input-meta">
+        <p class="guesses-left">Guesses remaining: <strong id="guesses-left-count">8</strong></p>
+        <button id="give-up-btn" class="give-up-btn">Give Up</button>
+      </div>
+    </section>
+
+    <!-- Guess Grid -->
+    <section class="grid-section" id="grid-section">
+      <div id="grid-container">
+        <div class="grid-header">
+          <div class="grid-header-cell">Breed</div>
+          <div class="grid-header-cell">SIZE</div>
+          <div class="grid-header-cell">SHED</div>
+          <div class="grid-header-cell">GROOM</div>
+          <div class="grid-header-cell">COAT</div>
+          <div class="grid-header-cell">ACTIVE</div>
+          <div class="grid-header-cell">LIFESPAN</div>
+          <div class="grid-header-cell">ORIGIN</div>
+        </div>
+        <div id="guess-rows"></div>
+      </div>
+    </section>
+
+    <!-- Color Legend -->
+    <section class="legend-section">
+      <button class="legend-toggle" id="legend-toggle">Color guide ▼</button>
+      <div class="legend-content hidden" id="legend-content">
+        <div class="legend-items">
+          <div class="legend-item">
+            <div class="legend-tile green">✓</div>
+            <span>Correct</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile yellow">~</div>
+            <span>Close / Partial</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile red">✗</div>
+            <span>Incorrect</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile red legend-tile-lg">↑</div>
+            <span>Guess Higher</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-tile red legend-tile-lg">↓</div>
+            <span>Guess Lower</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <a href="https://www.aspca.org/donate" target="_blank" rel="noopener noreferrer" class="footer-donate-btn">
+        ❤️ Donate to the ASPCA
+      </a>
+    </div>
+  </footer>
+
+  <!-- How to Play Modal -->
+  <div id="htp-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="htp-title">
+    <div class="modal-backdrop" id="htp-backdrop"></div>
+    <div class="modal-box htp-box">
+      <button class="modal-close" id="htp-close" aria-label="Close">✕</button>
+      <div class="htp-header">
+        <div class="modal-icon">🐾</div>
+        <h2 id="htp-title">How to Play</h2>
+      </div>
+
+      <ol class="htp-steps">
+        <li>
+          <span class="htp-step-icon">🏠</span>
+          <div><strong>Each day features a real shelter dog</strong> looking for a forever home. Guess both breeds in up to 8 tries.</div>
+        </li>
+        <li>
+          <span class="htp-step-icon">🔍</span>
+          <div><strong>Type a breed name</strong> and pick from the list, then hit the arrow to submit.</div>
+        </li>
+        <li>
+          <span class="htp-step-icon">🟩</span>
+          <div><strong>Use the color tiles</strong> to narrow it down:</div>
+        </li>
+      </ol>
+      <div class="htp-legend">
+        <div class="htp-legend-row">
+          <div class="legend-tile green">✓</div>
+          <span>Exact match</span>
+        </div>
+        <div class="htp-legend-row">
+          <div class="legend-tile yellow">~</div>
+          <span>Close / Partial match</span>
+        </div>
+        <div class="htp-legend-row">
+          <div class="legend-tile red">✗</div>
+          <span>No match</span>
+        </div>
+        <div class="htp-legend-row">
+          <div class="legend-tile red legend-tile-lg">↑↓</div>
+          <span>Guess higher / lower (size, lifespan, etc.)</span>
+        </div>
+      </div>
+      <p class="htp-adopt-note">🐕 After each puzzle, you'll get an adoption link for the dog you just played!</p>
+      <p class="htp-adopt-note">📅 Missed a day? Use the archive button to play past puzzles.</p>
+
+      <button id="htp-start-btn" class="htp-start-btn">Let's Play!</button>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div id="result-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal-title">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-box">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+
+      <div id="modal-win" class="modal-section hidden">
+        <div class="modal-icon">🎉</div>
+        <h2 id="modal-title">You got it!</h2>
+        <p id="win-message"></p>
+      </div>
+
+      <div id="modal-lose" class="modal-section hidden">
+        <div class="modal-icon">😔</div>
+        <h2>The breed was…</h2>
+        <p id="modal-lose-breeds">Better luck next time!</p>
+      </div>
+
+      <div class="modal-breed-reveal">
+        <img id="modal-photo" src="" alt="" />
+        <div class="modal-breed-text">
+          <h3 id="modal-breed-name"></h3>
+          <p id="modal-breed-details"></p>
+        </div>
+      </div>
+
+      <div class="adopt-section">
+        <p class="adopt-cta">This dog needs a forever home!</p>
+        <a id="adopt-btn" href="#" target="_blank" rel="noopener noreferrer" class="adopt-btn">
+          🐕 <span id="adopt-breed-span">Adopt this dog here</span>
+        </a>
+        <p id="adopt-org-fallback" class="adopt-org-fallback hidden">
+          or visit <a id="adopt-org-link" href="#" target="_blank" rel="noopener noreferrer"></a>
+        </p>
+      </div>
+
+      <div id="share-section" class="share-section hidden">
+        <button id="share-btn" class="share-btn">📋 Share Results</button>
+        <p id="share-toast" class="toast hidden">Copied to clipboard! ✓</p>
+      </div>
+
+      <div id="next-puzzle" class="next-puzzle hidden">
+        <p>Next DOGDLE in <strong id="countdown">—</strong></p>
+      </div>
+
+      <div id="modal-archive-link" class="modal-archive-link hidden">
+        <button class="modal-archive-btn">📅 Play more from the archive</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Archive Modal -->
+  <div id="archive-modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="archive-title">
+    <div class="modal-backdrop" id="archive-backdrop"></div>
+    <div class="modal-box archive-box">
+      <button class="modal-close" id="archive-close" aria-label="Close">✕</button>
+      <div class="htp-header">
+        <div class="modal-icon">📅</div>
+        <h2 id="archive-title">Archive</h2>
+      </div>
+      <div id="archive-list" class="archive-list"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

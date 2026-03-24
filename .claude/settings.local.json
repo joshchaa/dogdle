@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s https://dog.ceo/api/breeds/list/all)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); breeds=data[''''message'''']; flat=[b for b in breeds] + [f''''{b}/{s}'''' for b,subs in breeds.items\\(\\) for s in subs]; print\\(''''\\\\n''''.join\\(sorted\\(flat\\)\\)\\)\")",
+      "WebFetch(domain:dogapi.dog)",
+      "Bash(node -e \":*)",
+      "WebFetch(domain:userguide.rescuegroups.org)",
+      "WebSearch",
+      "WebFetch(domain:test1-api.rescuegroups.org)",
+      "WebFetch(domain:documenter.getpostman.com)",
+      "WebFetch(domain:api.rescuegroups.org)",
+      "WebFetch(domain:rescuegroups.org)",
+      "Bash(curl -s -o /tmp/rg_test.json -w \"%{http_code}\" \"https://api.rescuegroups.org/v5/public/animals/search/available/dogs/?limit=5&fields[animals]=name,breedPrimary,isBreedMixed,pictureThumbnailUrl,url,statuses\" -H \"Authorization: WIgIEIMK\" -H \"Content-Type: application/vnd.api+json\")"
+    ]
+  }
+}
