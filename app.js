@@ -153,6 +153,7 @@ function showAlbumPhoto(idx, direction = 0) {
     photoPlaceholder.style.display = 'none';
     dogPhoto.classList.remove('hidden');
     dogPhoto.classList.add('loaded');
+    resetPan();
     updateAlbumNav();
   };
   dogPhoto.onerror = () => {
@@ -173,6 +174,65 @@ function showPhoto(startIdx = 0) {
   }
   showAlbumPhoto(startIdx, 1);
 }
+
+// ─── Photo Pan ────────────────────────────────────────────────────────────────
+
+let panX = 50, panY = 5; // percent; start center-x, slightly from top
+let isPanning = false;
+let panStartX = 0, panStartY = 0;
+
+function resetPan() {
+  panX = 50; panY = 5;
+  dogPhoto.style.objectPosition = `${panX}% ${panY}%`;
+}
+
+function applyPanDelta(dx, dy) {
+  const frame = dogPhoto.parentElement;
+  const fw = frame.clientWidth;
+  const fh = frame.clientHeight;
+  const nw = dogPhoto.naturalWidth  || fw;
+  const nh = dogPhoto.naturalHeight || fh;
+  const scale = Math.max(fw / nw, fh / nh);
+  const overflowX = nw * scale - fw;
+  const overflowY = nh * scale - fh;
+  // Each axis: moving 1px of drag should move 1px in image space.
+  // object-position 0%→100% spans overflowX pixels of image travel.
+  if (overflowX > 1) panX = Math.max(0, Math.min(100, panX - (dx / overflowX) * 100));
+  if (overflowY > 1) panY = Math.max(0, Math.min(100, panY - (dy / overflowY) * 100));
+  dogPhoto.style.objectPosition = `${panX}% ${panY}%`;
+}
+
+dogPhoto.addEventListener('mousedown', e => {
+  if (e.button !== 0) return;
+  e.preventDefault();
+  isPanning = true;
+  panStartX = e.clientX; panStartY = e.clientY;
+  dogPhoto.classList.add('panning');
+});
+window.addEventListener('mousemove', e => {
+  if (!isPanning) return;
+  applyPanDelta(e.clientX - panStartX, e.clientY - panStartY);
+  panStartX = e.clientX; panStartY = e.clientY;
+});
+window.addEventListener('mouseup', () => {
+  if (!isPanning) return;
+  isPanning = false;
+  dogPhoto.classList.remove('panning');
+});
+
+dogPhoto.addEventListener('touchstart', e => {
+  if (e.touches.length !== 1) return;
+  e.preventDefault();
+  isPanning = true;
+  panStartX = e.touches[0].clientX; panStartY = e.touches[0].clientY;
+}, { passive: false });
+dogPhoto.addEventListener('touchmove', e => {
+  if (!isPanning || e.touches.length !== 1) return;
+  e.preventDefault();
+  applyPanDelta(e.touches[0].clientX - panStartX, e.touches[0].clientY - panStartY);
+  panStartX = e.touches[0].clientX; panStartY = e.touches[0].clientY;
+}, { passive: false });
+dogPhoto.addEventListener('touchend', () => { isPanning = false; });
 
 // ─── Breed Status ─────────────────────────────────────────────────────────────
 
