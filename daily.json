@@ -231,4 +231,70 @@
     "orgName": "Animal Rescue Fund of MS",
     "orgUrl": "http://arfms.org"
   }
+,{
+  "puzzleNumber": 11,
+  "date": "2026-03-29",
+  "dogName": "Cylana",
+  "bio": "",
+  "photos": [
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/100077476.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/96827212.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/97921793.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/97396761.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/100077475.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/97921794.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/96889290.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/96889291.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/94790546.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/96889289.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/96827111.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/95036173.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/94790547.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/35538797.jpg",
+    "https://cdn.rescuegroups.org/8099/pictures/animals/10138/10138270/35538798.jpg"
+  ],
+  "breed1": "shar-pei",
+  "breed2": "boxer",
+  "adoptionUrl": "http://www.angelsrescue.org/animals/detail?AnimalID=10138270",
+  "orgName": "Angels Among Us Pet Rescue",
+  "orgUrl": "http://www.angelsrescue.org"
+}
+,{
+  "puzzleNumber": 12,
+  "date": "2026-03-30",
+  "dogName": "Cosmos Beans Splash",
+  "bio": "",
+  "photos": [
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102757788.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102863120.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102720103.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102874489.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102874490.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102874491.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102530330.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102530534.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101489848.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101497962.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101440567.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/102295600.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101497967.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101497969.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101442528.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101442529.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101409961.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101409962.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101409966.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101409967.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101489833.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/101489855.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/47585466.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/46406341.jpg",
+    "https://cdn.rescuegroups.org/3964/pictures/animals/11237/11237847/46692661.jpg"
+  ],
+  "breed1": "dachshund",
+  "breed2": "chihuahua",
+  "adoptionUrl": "https://ddrtx.rescuegroups.org/animals/detail?AnimalID=11237847",
+  "orgName": "Diamond Dachshund Rescue of Texas",
+  "orgUrl": "http://www.ddrtx.org"
+}
 ]
